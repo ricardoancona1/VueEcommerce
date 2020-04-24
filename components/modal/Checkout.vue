@@ -22,8 +22,8 @@
 				</div>
 			</section>
 			<footer class="modal-card-foot">
-				<button v-show="products.length > 0 && !isCheckoutSection" class="button is-success" @click="onNextBtn">{{ buyLabel }}</button>
-				<button v-if="isCheckoutSection" class="button is-success" @click="closeModal(true)">{{ closeLabel }}</button>
+				<button v-show="products.length > 0 && !isCheckoutSection" class="button is-danger" @click="onNextBtn">{{ buyLabel }}</button>
+				<button v-if="isCheckoutSection" class="button is-danger" @click="closeModal(true)">{{ closeLabel }}</button>
 			</footer>
 		</div>
 	</div>
@@ -78,7 +78,7 @@ export default {
 				} else {
 					productLabel = 'product';
 				}
-				return `Buy ${totalProducts} ${productLabel} at ${finalPrice}€`;
+				return `Buy ${totalProducts} ${productLabel} at ${finalPrice}$`;
 		},
 		isUserLoggedIn () {
 			return this.$store.getters.isUserLoggedIn;

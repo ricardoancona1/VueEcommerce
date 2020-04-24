@@ -50,7 +50,7 @@
       <div class="card-footer btn-actions">
         <div class="card-footer-item field is-grouped">
           <div class="buttons">
-            <button class="button is-primary" v-if="!product.isAddedToCart" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
+            <button class="button is-danger" v-if="!product.isAddedToCart" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
             <button class="button is-text" v-if="product.isAddedToCart" @click="removeFromCart(product.id, false)">{{ removeFromCartLabel }}</button>
           </div>
            <div class="select is-rounded is-small">
@@ -86,7 +86,7 @@ export default {
 
   data () {
     return {
-      addToCartLabel: 'Add to cart',
+      addToCartLabel: 'Añadir al carrito',
       viewDetailsLabel: 'Details',
       removeFromCartLabel: 'Remove from cart',
       addToFavouriteLabel: 'Add to favourite',
@@ -163,7 +163,7 @@ export default {
     z-index: 1;
 
     &:hover {
-      border: 1px solid #51bafc;
+      border: 1px solid #CC8DBC;
     }
  }
  .button,
