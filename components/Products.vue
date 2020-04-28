@@ -41,10 +41,10 @@
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
-          <p>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No reviews' }}</p>
+          <p>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No Reviews' }}</p>
         </div>
         <p class="is-pulled-right">
-          <span class="title is-4"><strong>&euro; {{ product.price }}</strong></span>
+          <span class="title is-4"><strong>$$ {{ product.price }}</strong></span>
         </p>
       </div>
       <div class="card-footer btn-actions">

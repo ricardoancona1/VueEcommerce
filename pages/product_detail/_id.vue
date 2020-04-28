@@ -2,7 +2,7 @@
   <div class="section">
     <div class="card is-clearfix columns">
         <figure class="card-image is-480x480 column is-one-thirds">
-          <img src="https://bulma.io/images/placeholders/480x480.png">
+          <img src="https://pimg.amr.marykaycdn.com/HeroZoom/10000/300522_BotanicalEffects_MoisturizingGel._1tif.jpg">
         </figure>
         <div class="card-content column is-two-thirds">
           <div class="card-content__title">
@@ -52,7 +52,7 @@
           </div>
           <div class="card-content__reviews">
             <div class="is-pulled-left">
-              <p><strong>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No reviews' }}</strong></p>
+              <p><strong>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'Disponibles 10' }}</strong></p>
             </div>
             <div class="select is-rounded is-small is-pulled-right">
               <select @change="onSelectQuantity(product.id)" v-model="selected">
@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="card-content__price is-pulled-left">
-            <span class="title is-3"><strong>{{ product.price }}&euro;</strong></span>
+            <span class="title is-3"><strong>{{ product.price }}$$;</strong></span>
           </div>
           <div class="card-content__btn is-pulled-right">
             <button class="button is-primary" v-if="!isAddedBtn" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
