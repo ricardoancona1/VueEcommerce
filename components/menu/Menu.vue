@@ -1,5 +1,8 @@
 <template>
+
 	<div>
+
+		
 		<div class="navbar-item">
 			<div class="field is-grouped">
 				<p class="control">

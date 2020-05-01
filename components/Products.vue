@@ -1,8 +1,10 @@
 <template>
   <div>
+    
+    
     <div class="card-image">
       <figure class="image is-4by3">
-        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+        <img src="https://pimg.amr.marykaycdn.com/HeroZoom/10000/300522_BotanicalEffects_MoisturizingGel._1tif.jpg" alt="Placeholder image">
       </figure>
     </div>
     <div class="card-content">
@@ -44,7 +46,7 @@
           <p>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No Reviews' }}</p>
         </div>
         <p class="is-pulled-right">
-          <span class="title is-4"><strong>$$ {{ product.price }}</strong></span>
+          <span class="title is-4"><strong>$ {{ product.price }}</strong></span>
         </p>
       </div>
       <div class="card-footer btn-actions">
