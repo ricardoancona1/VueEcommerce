@@ -94,7 +94,7 @@
             </div>
           </section>
           <footer class="modal-card-foot">
-            <button v-if="!isUserSignedUp" class="button is-success">{{ primaryBtnLabel }}</button>
+            <button v-if="!isUserSignedUp" class="button is-info">{{ primaryBtnLabel }}</button>
             <button v-if="isUserSignedUp" type="button" class="button is-info" @click="closeModal">{{ btnRegisteredLabel }}</button>
           </footer>
         </form>

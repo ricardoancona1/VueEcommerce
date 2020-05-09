@@ -11,7 +11,7 @@
 					<div class="box" v-for="product in products" :key="product.id">
 						<button class="is-pulled-right button is-info is-inverted" @click="removeFromCart(product.id)">{{ removeLabel }}</button>
 						<p>{{ product.title }}  {{ product.quantity > 0 ?  ` - Quantity: ${product.quantity}` : ''}}</p>
-						<p>{{ product.price }} &$;</p>
+						<p>{{ product.price }} &$</p>
 					</div>
 					<div v-if="products.length === 0">
 						<p>{{ cartEmptyLabel }}</p>
@@ -22,8 +22,8 @@
 				</div>
 			</section>
 			<footer class="modal-card-foot">
-				<button v-show="products.length > 0 && !isCheckoutSection" class="button is-danger" @click="onNextBtn">{{ buyLabel }}</button>
-				<button v-if="isCheckoutSection" class="button is-danger" @click="closeModal(true)">{{ closeLabel }}</button>
+				<button v-show="products.length > 0 && !isCheckoutSection" class="button is-info" @click="onNextBtn">{{ buyLabel }}</button>
+				<button v-if="isCheckoutSection" class="button is-info" @click="closeModal(true)">{{ closeLabel }}</button>
 			</footer>
 		</div>
 	</div>

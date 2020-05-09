@@ -2,7 +2,7 @@
   <div class="section">
     <div class="card is-clearfix columns">
         <figure class="card-image is-480x480 column is-one-thirds">
-          <img src="https://pimg.amr.marykaycdn.com/HeroZoom/10000/300522_BotanicalEffects_MoisturizingGel._1tif.jpg">
+          <img src="https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg">
         </figure>
         <div class="card-content column is-two-thirds">
           <div class="card-content__title">

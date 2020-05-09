@@ -36,10 +36,10 @@ module.exports = {
       { property: 'twitter:image',  content: 'https://example.com/image.jpg' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/logo5.ico' },
       { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
-      { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/favicon-96x96.png' },
-      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+      { rel: 'icon', type: 'image/png', sizes: '96x96', href: '/logo5.jpg' },
+      { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/logo5.jpg' },
       { rel: 'apple-touch-icon', sizes: '57x57', href: '/apple-icon-57x57.png' },
       { rel: 'apple-touch-icon', sizes: '60x60', href: '/apple-icon-60x60.png' },
       { rel: 'apple-touch-icon', sizes: '72x72', href: '/apple-icon-72x72.png' },

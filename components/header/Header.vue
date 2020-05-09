@@ -96,7 +96,7 @@
 
 <style lang="scss" scoped>
   .title {
-    background: url('../../static/logo-main3.png') no-repeat;
+    background: url('../../static/logo5.jpg') no-repeat;
     background-position: 50% 50%;
     background-size: 180px;
     width: 175px;

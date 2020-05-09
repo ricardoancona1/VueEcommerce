@@ -4,7 +4,7 @@
     
     <div class="card-image">
       <figure class="image is-4by3">
-        <img src="https://pimg.amr.marykaycdn.com/HeroZoom/10000/300522_BotanicalEffects_MoisturizingGel._1tif.jpg" alt="Placeholder image">
+        <img src="https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg" alt="Placeholder image">
       </figure>
     </div>
     <div class="card-content">
@@ -52,7 +52,7 @@
       <div class="card-footer btn-actions">
         <div class="card-footer-item field is-grouped">
           <div class="buttons">
-            <button class="button is-danger" v-if="!product.isAddedToCart" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
+            <button class="button is-warning" v-if="!product.isAddedToCart" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
             <button class="button is-text" v-if="product.isAddedToCart" @click="removeFromCart(product.id, false)">{{ removeFromCartLabel }}</button>
           </div>
            <div class="select is-rounded is-small">
@@ -165,7 +165,7 @@ export default {
     z-index: 1;
 
     &:hover {
-      border: 1px solid #CC8DBC;
+      border: 1px solid rgb(4,72,135);
     }
  }
  .button,
