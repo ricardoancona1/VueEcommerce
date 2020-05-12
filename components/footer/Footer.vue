@@ -19,7 +19,7 @@ export default {
 
 <style lang="scss" scoped>
  .footer {
-   background:rgb(4,72,135);
+   background:rgb(0, 0, 0);
    color :white;
  }
 </style>

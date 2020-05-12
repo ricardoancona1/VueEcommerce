@@ -10,6 +10,15 @@
     <tab name="Nuestros Productos">
    
     </tab>
+    <tab name="Accesorios">
+
+       </tab>
+    <tab name="Quiénes somos">
+
+       </tab>
+    <tab name="Contáctanos">
+
+    </tab>
   </tabs>
   
 <img v-bind:src="img" alt="">
@@ -28,7 +37,7 @@ tabs
   data(){
 
   return{
-   img: 'https://cdn-ssl.s7.disneystore.com/is/content/ShopDisney/mb_toys-price-point_20200508'
+   img: 'https://www.lego.com/cdn/cs/set/assets/blt6a73e8c21a7f6ee9/01-1508-Vehicles-Homepage--200511--Hero-Standard-Large-KeyVisual.jpg?fit=crop&format=jpg&quality=80&auto=webp&width=1600&height=500&dpr=1'
   }
 }
 } //JavaScript

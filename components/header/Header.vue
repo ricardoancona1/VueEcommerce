@@ -96,11 +96,11 @@
 
 <style lang="scss" scoped>
   .title {
-    background: url('../../static/logo5.jpg') no-repeat;
+    background: url('../../static/toyshop.png') no-repeat;
     background-position: 50% 50%;
-    background-size: 180px;
+    background-size: 170px;
     width: 175px;
-    height: 35px;
+    height: 80px;
   }
   .shopping-cart {
     cursor: pointer;

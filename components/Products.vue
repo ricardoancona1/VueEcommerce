@@ -4,7 +4,7 @@
     
     <div class="card-image">
       <figure class="image is-4by3">
-        <img src="https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg" alt="Placeholder image">
+        <img src="https://www.lego.com/cdn/cs/set/assets/blt40a873f65eb0b290/VIP-GA-202004-Disruptor.jpg?quality=80" alt="Placeholder image">
       </figure>
     </div>
     <div class="card-content">
