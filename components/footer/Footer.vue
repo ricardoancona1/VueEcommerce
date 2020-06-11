@@ -2,7 +2,8 @@
   <div class="footer">
     <div class="columns container">
       <div class="column">
-        <p>Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.</p>
+        <p>Contactanos:999999</p>
+        <p>Correo: correo@dominio.com</p>
       </div>
     <div class="column has-text-right">
       <p>Vuemmerce | Made with ❤</p>
