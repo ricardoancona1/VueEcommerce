@@ -1,31 +1,37 @@
 <template>
   <div class="section">
     <div class="card is-clearfix columns">
-        <figure class="card-image is-480x480 column is-one-thirds">
-          <img src="https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg">
-        </figure>
-        <div class="card-content column is-two-thirds">
-          <div class="card-content__title">
-            <h2 class="title is-4">{{ product.title }}
-              <button class="button is-small" :title="removeFromFavouriteLabel" v-show="product.isFavourite" @click="removeFromFavourite(product.id)">
+      <figure class="card-image is-480x480 column is-one-thirds">
+        <img v-bind:src="producto.imgUrl" alt="Placeholder image" />
+      </figure>
+      <div class="card-content column is-two-thirds">
+        <div class="card-content__title">
+          <h2 class="title is-4">
+            {{ producto.nombre }}
+            <!--button class="button is-small" :title="removeFromFavouriteLabel" v-show="product.isFavourite" @click="removeFromFavourite(product.id)">
                 <span class="icon is-small">
                   <i class="fa fa-heart"></i>
                 </span>
-              </button>
-              <button class="button is-small" :title="addToFavouriteLabel" v-show="!product.isFavourite" @click="saveToFavorite(product.id)">
+              </button-->
+            <!--button class="button is-small" :title="addToFavouriteLabel" v-show="!product.isFavourite" @click="saveToFavorite(product.id)">
                 <span class="icon is-small">
                   <i class="fa fa-heart-o"></i>
                 </span>
-              </button>
-            </h2>
-          </div>
-          <div class="card-content__text">
-            <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud
-            </p>
-          </div>
-          <div class="card-content__ratings" v-if="product.rating === 1">
+              </button-->
+          </h2>
+        </div>
+        <div class="card-content__text">
+          <p>
+            {{ producto.descripcion }}
+          </p>
+          <p>
+            <strong> Marca: {{ producto.marca }} </strong>
+          </p>
+          <h2>
+            <strong> Disponibles: {{ producto.disponibles }} </strong>
+          </h2>
+        </div>
+        <!--div class="card-content__ratings" v-if="product.rating === 1">
             <i class="fa fa-star"></i>
           </div>
           <div class="card-content__ratings" v-else-if="product.rating === 2">
@@ -49,52 +55,95 @@
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
-          </div>
-          <div class="card-content__reviews">
-            <div class="is-pulled-left">
-              <p><strong>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'Disponibles 10' }}</strong></p>
-            </div>
-            <div class="select is-rounded is-small is-pulled-right">
-              <select @change="onSelectQuantity(product.id)" v-model="selected">
+          </div-->
+        <div class="card-content__reviews">
+          <div class="is-pulled-left"></div>
+          <div class="select is-rounded is-small is-pulled-right">
+            <!--select @change="onSelectQuantity(product.id)" v-model="selected">
                 <option v-for="quantity in quantityArray" :value="quantity">{{ quantity }}</option>
-              </select>
-            </div>
+              </select-->
           </div>
-          <div class="card-content__price is-pulled-left">
-            <span class="title is-3"><strong>{{ product.price }}$</strong></span>
-          </div>
-          <div class="card-content__btn is-pulled-right">
-            <button class="button is-primary" v-if="!isAddedBtn" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
-            <button class="button is-text" v-if="isAddedBtn" @click="removeFromCart(product.id)">{{ removeFromCartLabel }}</button>
-          </div>
+        </div>
+        <div class="card-content__price is-pulled-left">
+          <span class="title is-3"
+            ><strong>{{ producto.precio }}$ MXN</strong></span
+          >
+        </div>
+        <div class="card-content__btn is-pulled-right">
+          <!--button
+            class="button is-warning"
+            v-if="!isAddedBtn"
+            @click="addToCart(product.id)"
+          >
+            {{ addToCartLabel }}
+          </button-->
+          <button
+            class="button is-warning"
+            v-if="!agregadoAlCarrito"
+            @click="aniadirAlCarrito(producto.nombre, producto.precio,producto.id)"
+          >
+            Añadir al carrito 
+          </button>
+          <button
+            class="button is-text"
+            v-if="agregadoAlCarrito"
+            @click="removeFromCart(producto.id)"
+          >
+            {{ removeFromCartLabel }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { withVersioning, VersioningStrategy } from "axios-api-versioning";
+let uuid;
 export default {
-  name: 'product_detail-id',
+  name: "product_detail-id",
 
-  validate ({ params }) {
-    return /^\d+$/.test(params.id)
+  validate({ params }) {
+    //console.log(params.uuid)
+
+    return /^\d+$/.test(params.id);
   },
-  
-  data () {
+
+  data() {
     return {
-      addToCartLabel: 'Add to cart',
-      removeFromCartLabel: 'Remove from cart',
-      addToFavouriteLabel: 'Add to favourite',
-      removeFromFavouriteLabel: 'Remove from favourite',
+      addToCartLabel: "Añadir al carrito",
+      removeFromCartLabel: "Remover del carrito",
+      addToFavouriteLabel: "Add to favourite",
+      removeFromFavouriteLabel: "Remove from favourite",
       product: {},
       selected: 1,
-      quantityArray: []
+      quantityArray: [],
+      productos: [],
+      producto: {},
+      carrito: [],
+      agregadoAlCarrito:false
     };
   },
 
-  mounted () {
+  mounted() {
+    let uuid;
+    uuid = this.$route.params.uuid;
+   
+    axios
+      .get(`http://127.0.0.1:3000/v1/product/${uuid}`, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        this.producto = response.data;
+     
+      });
+
     this.product = this.$store.getters.getProductById(this.$route.params.id);
-    this.selected = this.product.quantity;
+
+    //  this.selected = this.product.quantity;
 
     for (let i = 1; i <= 20; i++) {
       this.quantityArray.push(i);
@@ -102,63 +151,69 @@ export default {
   },
 
   computed: {
-    isAddedBtn () {
+    isAddedBtn() {
       return this.product.isAddedBtn;
     }
   },
 
   methods: {
-    addToCart (id) {
+    aniadirAlCarrito(nombre,precio,id) {
+      //this.carrito.push(info);
       let data = {
         id: id,
         status: true
-      }
-      this.$store.commit('addToCart', id);
-      this.$store.commit('setAddedBtn', data);
+      };
+      let info={
+        nombre:nombre,
+        precio:precio}
+    this.agregadoAlCarrito=true
+     this.$store.commit("AniadirAlCarrito", info);
     },
-    removeFromCart (id) {
+    addToCart(id) {
       let data = {
         id: id,
-        status: false
-      }
-      this.$store.commit('removeFromCart', id);
-      this.$store.commit('setAddedBtn', data);
+        status: true
+      };
+      this.$store.commit("addToCart", id);
+      this.$store.commit("setAddedBtn", data);
     },
-    onSelectQuantity (id) {
+    removeFromCart(id) {
+  this.agregadoAlCarrito=false
+    },
+    onSelectQuantity(id) { //para agregar varios productos a la vez 
       let data = {
-        id: id,
-        quantity: this.selected
-      }
-      this.$store.commit('quantity', data);
+        id: id
+        //  quantity: this.selected
+      };
+      //  this.$store.commit('quantity', data);
     },
-    saveToFavorite (id) {
+    saveToFavorite(id) {
       let isUserLogged = this.$store.state.userInfo.isLoggedIn;
 
       if (isUserLogged) {
-        this.$store.commit('addToFavourite', id);
+        this.$store.commit("addToFavourite", id);
       } else {
-        this.$store.commit('showLoginModal', true);
+        this.$store.commit("showLoginModal", true);
       }
     },
-    removeFromFavourite (id) {
-      this.$store.commit('removeFromFavourite', id);
+    removeFromFavourite(id) {
+      this.$store.commit("removeFromFavourite", id);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-  .card-content {
-    padding: 15px 10px 15px 0;
+.card-content {
+  padding: 15px 10px 15px 0;
 
-    &__text {
-      margin: 15px 0;
-    }
-    &__reviews {
-      display: inline-block;
-      width: 100%;
-      margin-bottom: 10px;
-    }
+  &__text {
+    margin: 15px 0;
   }
+  &__reviews {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
 </style>
-

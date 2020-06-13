@@ -8,21 +8,21 @@
 			</header>
 			<section class="modal-card-body">
 				<div v-if="!isCheckoutSection">
-					<div class="box" v-for="product in products" :key="product.id">
+					<div class="box" v-for="product in productos" :key="product.id">
 						<button class="is-pulled-right button is-info is-inverted" @click="removeFromCart(product.id)">{{ removeLabel }}</button>
-						<p>{{ product.title }}  {{ product.quantity > 0 ?  ` - Quantity: ${product.quantity}` : ''}}</p>
-						<p>{{ product.price }} &$</p>
+						<p>{{ product.nombre }}  {{ product.quantity > 0 ?  ` - Quantity: ${product.quantity}` : ''}}</p>
+						<p>{{ product.precio }} </p>
 					</div>
-					<div v-if="products.length === 0">
+					<div v-if="productos.length === 0">
 						<p>{{ cartEmptyLabel }}</p>
 					</div>
 				</div>
 				<div v-if="isCheckoutSection">
-					<p>You bought it :-)</p>
+					<p>Lo compraste! :-)</p>
 				</div>
 			</section>
 			<footer class="modal-card-foot">
-				<button v-show="products.length > 0 && !isCheckoutSection" class="button is-info" @click="onNextBtn">{{ buyLabel }}</button>
+				<button v-show="productos.length > 0 && !isCheckoutSection" class="button is-info" @click="onNextBtn">{{ buyLabel }}</button>
 				<button v-if="isCheckoutSection" class="button is-info" @click="closeModal(true)">{{ closeLabel }}</button>
 			</footer>
 		</div>
@@ -35,17 +35,21 @@ export default {
     
 	data () {
 		return {
-			modalTitle: 'Checkout',
-			removeLabel: 'Remove from cart',
-			cartEmptyLabel: 'Your cart is empty',
-			closeLabel: 'Close',
+			modalTitle: 'Tu Carrito',
+			removeLabel: 'Remover del carrito',
+			cartEmptyLabel: 'Tu carrito esta vacío',
+			closeLabel: 'Cerrar',
 			isCheckoutSection: false
 		}
 	},
 
 	computed: {
 			products () {
+	
 				return this.$store.getters.productsAdded;
+			},
+			productos(){
+				return this.$store.getters.carrito;
 			},
 			openModal () {
 				if (this.$store.getters.isCheckoutModalOpen) {
@@ -55,8 +59,8 @@ export default {
 				}
 			},
 			buyLabel () {
-				let totalProducts = this.products.length,
-						productsAdded = this.$store.getters.productsAdded,
+				let totalProducts = this.productos.length,
+						productsAdded = this.$store.getters.carrito,
 						pricesArray = [],
 						productLabel = '',
 						finalPrice = '',
@@ -67,18 +71,18 @@ export default {
 					if (product.quantity >= 1) {
 						quantity = product.quantity;
 					}
+					
+					pricesArray.push((product.precio)); // get the price of every product added and multiply quantity
+					//console.log("array de precios",pricesArray)
+			});
 
-					pricesArray.push((product.price * quantity)); // get the price of every product added and multiply quantity
-				});
-
-				finalPrice = pricesArray.reduce((a, b) => a + b, 0); // sum the prices
-				
+					finalPrice = pricesArray.reduce((a, b) => a + b, 0); // sum the prices
 				if (totalProducts > 1) { // set plural or singular
-					productLabel = 'products';
+					productLabel = 'productos';
 				} else {
-					productLabel = 'product';
+					productLabel = 'producto';
 				}
-				return `Buy ${totalProducts} ${productLabel} at ${finalPrice}$`;
+				return `Comprar ${totalProducts} ${productLabel} por $ ${finalPrice} MXN`;
 		},
 		isUserLoggedIn () {
 			return this.$store.getters.isUserLoggedIn;

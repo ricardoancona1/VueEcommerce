@@ -1,113 +1,110 @@
-export const state = () => ({
+import axios from "axios"
+
+
+ function conexion (){
+ return  axios
+    .get("http://127.0.0.1:3000/v1/product", {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      return response.data.listProducts[0].descripcion
+   
+     // return 'hola'
+    })
+
+}
+
+export let arreglo=[]
+
+let userToken= conexion()
+userToken.then(function(result){
+//console.log(result)
+arreglo[0]=result
+//console.log(arreglo[0])
+
+state().products[0].description=result
+return arreglo[0]
+})
+
+export let state = () => ({
+ 
+  carrito:[],
   products: [
+
+    
     {
+     
+    //  descripcion:'asd',
       id: 1,
-      title: 'Product 1',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 50,
+      title: 2,
+      description: '',
+      price:123,
       ratings: 3,
-      disponibles: 5,
+      reviews: 5,
       isAddedToCart: false,
       isAddedBtn: false,
       isFavourite: false,
-      quantity: 1
+      quantity: 1,
+      //imgUrl:''
+    //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
+      
     },
     {
-      id: 2,
-      title: 'Product 2',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 35,
-      ratings: 5,
-      disponibles: 10,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 3,
-      title: 'Product 3',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 110,
-      ratings: 2,
-      disponibles: 3,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 4,
-      title: 'Product 4',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 50,
-      ratings: 1,
-      disponibles: 0,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 5,
-      title: 'Product 5',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 35,
-      ratings: 4,
-      disponibles: 2,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 6,
-      title: 'Product 6',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 110,
-      ratings: 5,
-      disponibles: 1,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 7,
-      title: 'Product 7',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 50,
-      ratings: 5,
-      disponibles: 7,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 8,
-      title: 'Product 8',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 35,
-      ratings: 3,
-      disponibles: 0,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    },
-    {
-      id: 9,
-      title: 'Product 9',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-      price: 110,
-      ratings: 4,
-      reviews: 2,
-      isAddedToCart: false,
-      isAddedBtn: false,
-      isFavourite: false,
-      quantity: 1
-    }
+     
+      //  descripcion:'asd',
+        id: 2,
+        title: 2,
+        description: '',
+        price:123,
+        ratings: 3,
+        reviews: 5,
+        isAddedToCart: false,
+        isAddedBtn: false,
+        isFavourite: false,
+        quantity: 1,
+        //imgUrl:''
+      //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
+        
+      },
+      {
+     
+        //  descripcion:'asd',
+          id: 3,
+          title: 3,
+          description: '',
+          price:123,
+          ratings: 3,
+          reviews: 5,
+          isAddedToCart: false,
+          isAddedBtn: false,
+          isFavourite: false,
+          quantity: 1,
+          //imgUrl:''
+        //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
+          
+        },
+        {
+     
+          //  descripcion:'asd',
+            id: 4,
+            title: 3,
+            description: '',
+            price:123,
+            ratings: 3,
+            reviews: 5,
+            isAddedToCart: false,
+            isAddedBtn: false,
+            isFavourite: false,
+            quantity: 1,
+            //imgUrl:''
+          //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
+            
+          }
+      
+    
+   
   ],
   userInfo: {
     isLoggedIn: false,
@@ -123,12 +120,17 @@ export const state = () => ({
   }
 })
 
+
 export const getters = {
   productsAdded: state => {
     return state.products.filter(el => {
       return el.isAddedToCart;
     });
   },
+  carrito: state => {
+ return state.carrito
+  },
+
   productsAddedToFavourite: state => {
     return state.products.filter(el => {
       return el.isFavourite;
@@ -161,6 +163,9 @@ export const getters = {
 }
 
 export const mutations = {
+  AniadirAlCarrito: (state,info) => {
+    state.carrito.push(info)
+  },
   addToCart: (state, id) => {
     state.products.forEach(el => {
       if (id === el.id) {
@@ -242,12 +247,10 @@ export const actions = {
     const res = await this.$axios.get("/api/current_user")
     commit("SET_USER", res.data)
   },
-
   async logout({ commit }) {
     const { data } = await this.$axios.get("/api/logout")
     if (data.ok) commit("SET_USER", null)
   },
-
   async handleToken({ commit }, token) {
     const res = await this.$axios.post("/api/stripe", token)
     commit("SET_USER", res.data)

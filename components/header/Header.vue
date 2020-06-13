@@ -82,7 +82,7 @@
 
     computed: {
       numProductsAdded () {
-        return this.$store.getters.productsAdded.length;
+        return this.$store.getters.carrito.length;
       }
     },
 

@@ -46,9 +46,9 @@ export default {
 	data () {
 		return {
 			wishlistLabel: 'Wishlist',
-			logoutLabel: 'Log out',
-			loginLabel: 'Log in',
-			signupLabel: 'Sign up'
+			logoutLabel: 'Cerrar sesión',
+			loginLabel: 'Iniciar sesión',
+			signupLabel: 'Registrate'
 		}
 	},
 

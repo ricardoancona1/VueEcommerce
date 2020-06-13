@@ -1,10 +1,8 @@
 <template>
   <div>
-    
-    
     <div class="card-image">
       <figure class="image is-4by3">
-        <img src="https://www.lego.com/cdn/cs/set/assets/blt40a873f65eb0b290/VIP-GA-202004-Disruptor.jpg?quality=80" alt="Placeholder image">
+        <img v-bind:src="product.imgUrl" alt="Placeholder image">
       </figure>
     </div>
     <div class="card-content">
@@ -26,7 +24,7 @@
         </div>
       </div>
       <div class="content is-clearfix">
-        <p>{{ product.description }}</p>
+        <p>{{ product.descripcion }}</p>
         <div class="is-pulled-left">
           <i v-if="product.ratings === 1" class="fa fa-star"></i>
           <i v-if="product.ratings === 2" class="fa fa-star"></i>
@@ -43,10 +41,10 @@
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
-          <p>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No Reviews' }}</p>
+          <p>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No reviews' }}</p>
         </div>
         <p class="is-pulled-right">
-          <span class="title is-4"><strong>$ {{ product.price }}</strong></span>
+          <span class="title is-4"><strong> $ {{ product.precio }} MXN</strong></span>
         </p>
       </div>
       <div class="card-footer btn-actions">
@@ -56,24 +54,23 @@
             <button class="button is-text" v-if="product.isAddedToCart" @click="removeFromCart(product.id, false)">{{ removeFromCartLabel }}</button>
           </div>
            <div class="select is-rounded is-small">
-            <select @change="onSelectQuantity(product.id)" v-model="selected">
+            <!--select @change="onSelectQuantity(product.id)" v-model="selected">
               <option v-for="quantity in quantityArray" :value="quantity">{{ quantity }}</option>
-            </select>
+            </select-->
           </div>
         </div>
       </div>
     </div>
-    <nuxt-link
+    <nuxt-link :product="product"
       class="details"
       :to="{
         name: 'product_detail-id',
         params: {
+        
+          uuid:product.uuid,
           id: product.id,
-          title: product.title,
-          price: product.price,
-          rating: product.ratings,
-          reviews: product.reviews,
-          isAddedBtn: product.isAddedBtn
+
+
         }
       }"
     >
@@ -82,38 +79,36 @@
 </template>
 
 <script>
+import detalles from '../pages/product_detail/_id'
 export default {
   name: 'products',
   props: ['product'],
-
   data () {
     return {
       addToCartLabel: 'Añadir al carrito',
-      viewDetailsLabel: 'Details',
-      removeFromCartLabel: 'Remove from cart',
+      viewDetailsLabel: 'Detalles',
+      removeFromCartLabel: 'Remover del carrito',
       addToFavouriteLabel: 'Add to favourite',
-      removeFromFavouriteLabel: 'Remove from favourite',
+      removeFromFavouriteLabel: 'Remover de favoritos',
       selected: 1,
-      quantityArray: []
+      quantityArray: [],
+
     }
   },
-
+  components:{detalles},
   mounted () {
     for (let i = 1; i <= 20; i++) {
       this.quantityArray.push(i);
     }
-
-    if (this.$props.product.quantity > 1) {
-      this.selected = this.$props.product.quantity;
-    }
+   // if (this.$props.product.quantity > 1) {
+    //  this.selected = this.$props.product.quantity;
+    //}
   },
-
   computed: {
     isUserLogged () {
       return this.$store.getters.isUserLoggedIn;
     }
   },
-
   methods: {
     addToCart (id) {
       let data = {
@@ -133,7 +128,6 @@ export default {
     },
     saveToFavorite (id) {
       let isUserLogged = this.$store.state.userInfo.isLoggedIn;
-
       if (isUserLogged) {
         this.$store.commit('addToFavourite', id);
       } else {
@@ -163,9 +157,8 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 1;
-
     &:hover {
-      border: 1px solid rgb(4,72,135);
+      border: 1px solid #51bafc;
     }
  }
  .button,
@@ -184,5 +177,3 @@ export default {
    margin: 0;
  }
 </style>
-
-

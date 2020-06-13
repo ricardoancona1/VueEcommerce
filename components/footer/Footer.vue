@@ -2,11 +2,13 @@
   <div class="footer">
     <div class="columns container">
       <div class="column">
-        <p>Contactanos: 9999999999.</p>
-        <p>Correo: correo@dominio.com.</p>
+        <p>Contactanos </p>
+         <p> Tel.: 99942350</p>
+         <br>
+        <p>Correo: comprasallynat@gmail.com</p>
       </div>
     <div class="column has-text-right">
-      <p>Vuemmerce | Made with ❤</p>
+      <p>Comprasallynat | 2020 </p>
     </div>
     </div>
   </div>
