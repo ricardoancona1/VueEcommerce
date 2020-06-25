@@ -8,19 +8,13 @@
     <div class="card-content">
       <div class="media">
         <div class="media-content">
-          <p class="title is-4">{{ product.title }}</p>
+          <p class="title is-4">{{ product.nombre }}</p>
         </div>
         <div>
           <button class="button is-small" :title="removeFromFavouriteLabel" v-show="product.isFavourite" @click="removeFromFavourite(product.id)">
-            <span class="icon is-small">
-              <i class="fa fa-heart"></i>
-            </span>
+
           </button>
-          <button class="button is-small" :title="addToFavouriteLabel" v-show="!product.isFavourite" @click="saveToFavorite(product.id)">
-            <span class="icon is-small">
-              <i class="fa fa-heart-o"></i>
-            </span>
-          </button>
+
         </div>
       </div>
       <div class="content is-clearfix">
@@ -41,7 +35,6 @@
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
           <i v-if="product.ratings === 5" class="fa fa-star"></i>
-          <p>{{ product.reviews > 0 ? `${product.reviews} Reviews` : 'No reviews' }}</p>
         </div>
         <p class="is-pulled-right">
           <span class="title is-4"><strong> $ {{ product.precio }} MXN</strong></span>
@@ -53,11 +46,7 @@
             <button class="button is-warning" v-if="!product.isAddedToCart" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
             <button class="button is-text" v-if="product.isAddedToCart" @click="removeFromCart(product.id, false)">{{ removeFromCartLabel }}</button>
           </div>
-           <div class="select is-rounded is-small">
-            <!--select @change="onSelectQuantity(product.id)" v-model="selected">
-              <option v-for="quantity in quantityArray" :value="quantity">{{ quantity }}</option>
-            </select-->
-          </div>
+
         </div>
       </div>
     </div>

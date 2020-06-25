@@ -29,13 +29,13 @@ export default {
   },
   mounted(){
     axios
-      .get("http://127.0.0.1:3000/v1/product", {
+      .get("http://127.0.0.1:3000/v1/categoria/Belleza", {
         headers: {
           "Content-Type": "application/json"
         }
       })
       .then(response => {
-        this.productos = response.data.listProducts;
+        this.productos = response.data.productos;
         
       });
 
@@ -51,22 +51,6 @@ export default {
     }
   },
   methods: {
-    mostrarNuestrosProductos(){
-   axios
-      .get("http://127.0.0.1:3000/v1/categoria/NuestrosProductos", {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(response => {
-        this.productos = response.data.listProducts;
-        
-      });
-
-
-  },
-
-    },
     getProductByTitle () {
       let listOfProducts = this.$store.state.products,
           titleSearched = this.$store.state.userInfo.productTitleSearched;
@@ -74,7 +58,7 @@ export default {
       return this.productsFiltered = getByTitle(listOfProducts, titleSearched);
     }
   }
-;
+};
 </script>
 
 <style lang="scss" scoped>
