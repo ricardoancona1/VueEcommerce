@@ -24,11 +24,7 @@ export default {
 
 	computed: {
 		placeholder () {
-			if (this.$route.path === '/wishlist') {
-				return 'Search in wishlist...';
-			} else {
-				return 'Search...';
-			}
+
 		}
 	},
 
@@ -38,7 +34,7 @@ export default {
 				this.$store.commit('setHasUserSearched', true);
 				this.$store.commit('setProductTitleSearched', value);
 			} else {
-				this.$store.commit('setHasUserSearched', false);
+				this.$store.commit('setHasUserSearched', true);
 				this.$store.commit('setProductTitleSearched', '');
 			}
 		}

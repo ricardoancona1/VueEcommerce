@@ -19,11 +19,11 @@
       </b-field>
       </b-field>
 
-      <b-field label="Fecha de Nacimiento">
-        <b-datepicker placeholder="Seleccione una fecha" icon="calendar-today" editable></b-datepicker>
+      <b-field label="Fecha de Nacimiento" >
+        <b-datepicker placeholder="Seleccione una fecha" icon="calendar-today" ></b-datepicker>
       </b-field>
 
-      <b-field label="Direccion">
+      <b-field label="Dirección">
         <b-input placeholder="Calle y Número ( Incluir Numero Interior )"></b-input>
       </b-field>
 
@@ -80,13 +80,14 @@
         <b-input placeholder="Ejemplo: 97000"></b-input>
       </b-field>
 
-      <b-field label="Telefono">
+      <b-field label="Teléfono">
         <b-input placeholder="Ingresa tu numero de Celular"></b-input>
       </b-field>
-
+  <br>
       <div class="buttons">
         <b-button type="submit" class="tag is-warning is-medium">Guardar Cambios</b-button>
       </div>
+      <br>
     </section>
 
     </div>

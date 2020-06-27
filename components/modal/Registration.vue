@@ -150,13 +150,13 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button v-if="!isUserSignedUp" class="button is-info" @click="enviarFormulario">
+          <button v-if="!isUserSignedUp" class="button is-success" @click="enviarFormulario">
             {{ primaryBtnLabel }}
           </button>
           <button
             v-if="isUserSignedUp"
             type="button"
-            class="button is-info"
+            class="button is-success"
             @click="closeModal"
           >
             {{ btnRegisteredLabel }}

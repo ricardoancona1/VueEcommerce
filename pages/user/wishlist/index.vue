@@ -29,19 +29,15 @@ export default {
   components: { VmProductsList },
 
   computed: {
-    productsInWishlist () {
-      if (this.$store.state.userInfo.hasSearched) {
-        return this.getProductByTitle();
-      } else {
-        return this.$store.getters.productsAddedToFavourite;
-      }
-    }
+
+    
   },
 
   methods: {
     getProductByTitle () {
-      let listOfProducts = this.$store.getters.productsAddedToFavourite,
+      let listOfProducts = this.productos,
           titleSearched = this.$store.state.userInfo.productTitleSearched;
+          console.log('this is a title searched',titleSearched)
       
       return this.productsFiltered = getByTitle(listOfProducts, titleSearched);
     }

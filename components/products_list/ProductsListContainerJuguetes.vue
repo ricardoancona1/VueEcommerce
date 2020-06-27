@@ -52,10 +52,10 @@ export default {
   },
   methods: {
     getProductByTitle () {
-      let listOfProducts = this.$store.state.products,
+      let listOfProducts = this.productos,
           titleSearched = this.$store.state.userInfo.productTitleSearched;
       
-      return this.productsFiltered = getByTitle(listOfProducts, titleSearched);
+      return this.productos = getByTitle(listOfProducts, titleSearched);
     }
   }
 };

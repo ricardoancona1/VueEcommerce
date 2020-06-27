@@ -10,12 +10,7 @@
         <div class="media-content">
           <p class="title is-4">{{ product.nombre }}</p>
         </div>
-        <div>
-          <button class="button is-small" :title="removeFromFavouriteLabel" v-show="product.isFavourite" @click="removeFromFavourite(product.id)">
 
-          </button>
-
-        </div>
       </div>
       <div class="content is-clearfix">
         <p>{{ product.descripcion }}</p>
@@ -43,7 +38,7 @@
       <div class="card-footer btn-actions">
         <div class="card-footer-item field is-grouped">
           <div class="buttons">
-            <button class="button is-warning" v-if="!product.isAddedToCart" @click="addToCart(product.id)">{{ addToCartLabel }}</button>
+             <button class="button is-warning" v-if="!product.isAddedToCart" @click="aniadirAlCarrito(product.nombre, product.precio,product.id)">{{ addToCartLabel }}</button>
             <button class="button is-text" v-if="product.isAddedToCart" @click="removeFromCart(product.id, false)">{{ removeFromCartLabel }}</button>
           </div>
 
@@ -77,8 +72,6 @@ export default {
       addToCartLabel: 'Añadir al carrito',
       viewDetailsLabel: 'Detalles',
       removeFromCartLabel: 'Remover del carrito',
-      addToFavouriteLabel: 'Add to favourite',
-      removeFromFavouriteLabel: 'Remover de favoritos',
       selected: 1,
       quantityArray: [],
 
@@ -98,7 +91,19 @@ export default {
       return this.$store.getters.isUserLoggedIn;
     }
   },
-  methods: {
+  methods: {    
+    aniadirAlCarrito(nombre,precio,id) {
+      //this.carrito.push(info);
+      let data = {
+        id: id,
+        status: true
+      };
+      let info={
+        nombre:nombre,
+        precio:precio}
+    this.agregadoAlCarrito=true
+     this.$store.commit("AniadirAlCarrito", info);
+    },
     addToCart (id) {
       let data = {
         id: id,

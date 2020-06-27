@@ -1,5 +1,9 @@
 <template>
+<div>
+  <br>
+   <br>
   <div class="footer">
+
     <div class="columns container">
       <div class="column">
         <p>Contactanos </p>
@@ -12,6 +16,7 @@
     </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>

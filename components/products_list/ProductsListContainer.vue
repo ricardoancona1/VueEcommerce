@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       id: '',
-      noProductLabel: 'No product found',
+      noProductLabel: 'No se encontraron productos',
       productsFiltered: [],
       productos:[]
     };
@@ -65,14 +65,15 @@ export default {
 
 
   },
+      getProductByTitle () {
+      let listOfProducts = this.productos,
+        titleSearched = this.$store.state.userInfo.productTitleSearched;
+      console.log(titleSearched)
+      return this.productos = getByTitle(listOfProducts, titleSearched);
+    }
 
     },
-    getProductByTitle () {
-      let listOfProducts = this.$store.state.products,
-          titleSearched = this.$store.state.userInfo.productTitleSearched;
-      
-      return this.productsFiltered = getByTitle(listOfProducts, titleSearched);
-    }
+
   }
 ;
 </script>

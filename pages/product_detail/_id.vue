@@ -58,11 +58,11 @@
           </div-->
         <div class="card-content__reviews">
           <div class="is-pulled-left"></div>
-          <div class="select is-rounded is-small is-pulled-right">
+          <!--div class="select is-rounded is-small is-pulled-right">
             <!--select @change="onSelectQuantity(product.id)" v-model="selected">
                 <option v-for="quantity in quantityArray" :value="quantity">{{ quantity }}</option>
-              </select-->
-          </div>
+              </select>
+          </div-->
         </div>
         <div class="card-content__price is-pulled-left">
           <span class="title is-3"
@@ -114,8 +114,6 @@ export default {
     return {
       addToCartLabel: "Añadir al carrito",
       removeFromCartLabel: "Remover del carrito",
-      addToFavouriteLabel: "Add to favourite",
-      removeFromFavouriteLabel: "Remove from favourite",
       product: {},
       selected: 1,
       quantityArray: [],
@@ -158,6 +156,7 @@ export default {
 
   methods: {
     aniadirAlCarrito(nombre,precio,id) {
+      console.log('hola')
       //this.carrito.push(info);
       let data = {
         id: id,
