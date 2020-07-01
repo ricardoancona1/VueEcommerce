@@ -66,7 +66,7 @@
         </div>
         <div class="card-content__price is-pulled-left">
           <span class="title is-3"
-            ><strong>{{ producto.precio }}$ MXN</strong></span
+            ><strong> ${{ producto.precio }} MXN</strong></span
           >
         </div>
         <div class="card-content__btn is-pulled-right">

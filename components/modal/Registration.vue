@@ -140,17 +140,31 @@
               </p>
             </div>
           </div>
+       
           <div v-if="isUserSignedUp" class="level">
             <div class="level-item has-text-centered">
               <div>
                 <p class="title">Bienvenido {{ name }}!</p>
-                <p class="heading">Te has registrado con éxito</p>
+                <br>
+                <h1>Para empezar a comprar, completa el registro en la seccion Tu perfil</h1>
+              </div>
+            </div>
+          </div>
+             <div v-else-if="status==200" class="level">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="title">Ooops.. {{ name }}!</p>
+                <p class="heading">Parece que el correo ya esta ocupado por otro usuario, intente uno diferente</p>
               </div>
             </div>
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button v-if="!isUserSignedUp" class="button is-success" @click="enviarFormulario">
+          <button
+            v-if="!isUserSignedUp"
+            class="button is-success"
+            @click="enviarFormulario"
+          >
             {{ primaryBtnLabel }}
           </button>
           <button
@@ -176,7 +190,7 @@ export default {
   data() {
     return {
       modalTitle: "Registrate",
-      modalTitleRegistered: "Bienvendio ",
+      modalTitleRegistered: "Bienvenido ",
       primaryBtnLabel: "Registrate",
       btnRegisteredLabel: "Cerrar",
       namePlaceholder: "Nombre*",
@@ -191,13 +205,13 @@ export default {
       name: "",
       email: "",
       password: "",
-      direccion: "esto es una direccion de prueba",
       repeatPassword: "",
       highlightNameWithError: null,
       highlightEmailWithError: null,
       highlightPasswordWithError: null,
       highlightRepeatPasswordWithError: null,
-      isFormSuccess: false
+      isFormSuccess: false,
+      status:"",
     };
   },
   computed: {
@@ -215,18 +229,24 @@ export default {
 
   methods: {
     enviarFormulario() {
-      console.log(Date.now())
-
       axios
         .post("http://127.0.0.1:3000/v1/adduser", {
-name:this.name,
-email:this.email,
-password:this.password,
-direccion:"calle 69A #951 x116A y 116B Jardines de nueva mulsay",
-rollID:1,
-//created_at: "2020-02-14 18:00:00",
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          rollID: 1
         })
-        .then(response => {});
+        .then(response => {
+        if(response.status==200){
+               console.log(response.status)
+               this.status=200
+        }
+        if(response.status==201){
+               console.log(response.status)
+               this.status=201
+        }
+
+        });
     },
     closeModal() {
       this.$store.commit("showSignupModal", false);
@@ -234,7 +254,7 @@ rollID:1,
     checkForm(e) {
       e.preventDefault();
 
-      if (this.name && this.email && this.password && this.repeatPassword) {
+      if (this.name && this.email && this.password && this.repeatPassword && this.status=="201") {
         this.highlightEmailWithError = false;
         this.highlightPasswordWithError = false;
         this.isFormSuccess = true;

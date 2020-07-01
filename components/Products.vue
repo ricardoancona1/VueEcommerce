@@ -38,7 +38,7 @@
       <div class="card-footer btn-actions">
         <div class="card-footer-item field is-grouped">
           <div class="buttons">
-             <button class="button is-warning" v-if="!product.isAddedToCart" @click="aniadirAlCarrito(product.nombre, product.precio,product.id)">{{ addToCartLabel }}</button>
+             <button class="button is-warning" v-if="!product.isAddedToCart" @click="aniadirAlCarrito(product.nombre, product.precio,product.uuid)">{{ addToCartLabel }}</button>
             <button class="button is-text" v-if="product.isAddedToCart" @click="removeFromCart(product.id, false)">{{ removeFromCartLabel }}</button>
           </div>
 
@@ -99,6 +99,7 @@ export default {
         status: true
       };
       let info={
+        id:id,
         nombre:nombre,
         precio:precio}
     this.agregadoAlCarrito=true
