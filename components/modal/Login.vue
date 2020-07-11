@@ -34,7 +34,7 @@
                 <input 
                   :class="[highlightPasswordWithError ? 'input is-danger' : 'input']"
                   type="password"
-                  placeholder="Your password"
+                  placeholder="Tu contraseña"
                   name="passwordName"
                   v-model="password"
                   @keyup="checkPasswordOnKeyUp(password)"
@@ -52,14 +52,14 @@
           <div v-if="isUserLoggedIn" class="level">
             <div class="level-item has-text-centered">
               <div>
-                <p class="title">Welcome back!</p>
-                <p class="heading">Now you are logged in</p>
+                <p class="title">Bienvenido otra vez!</p>
+                <p class="heading">Has iniciado sesión</p>
               </div>
             </div>
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button v-if="!isUserLoggedIn" type="submit" class="button is-info">{{ primaryBtnLabel }}</button>
+          <button @click="logIn(email,password)"  v-if="!isUserLoggedIn" type="submit" class="button is-info">{{ primaryBtnLabel }} </button>
           <button v-if="isUserLoggedIn" type="button" class="button is-info" @click="closeModal">{{ btnLoggedInLabel }}</button>
         </footer>
       </form>
@@ -69,20 +69,20 @@
 
 <script>
 import { isValidEmail } from '@/assets/validators';
-
+import axios from 'axios'
 export default {
   name: 'login',
 
   data () {
     return {
-      modalTitle: 'Log in',
-      modalTitleLoggedIn: 'Welcome!',
-      primaryBtnLabel: 'Log in',
-      emailRequiredLabel: 'Email required',
-      passwordRequiredLabel: 'Password required',
-      emailNotValidLabel: 'Valid email required',
-      btnLoggedInLabel: 'Close',
-      emailPlaceholder: 'Your email',
+      modalTitle: 'Iniciar sesión',
+      modalTitleLoggedIn: 'BIenvenido!',
+      primaryBtnLabel: 'Iniciar sesión',
+      emailRequiredLabel: 'Email requerido',
+      passwordRequiredLabel: 'Contraseña requerida',
+      emailNotValidLabel: 'El correo no es válido',
+      btnLoggedInLabel: 'Cerrar',
+      emailPlaceholder: 'Tu correo',
       email: '',
       password: '',
       highlightEmailWithError: null,
@@ -105,6 +105,27 @@ export default {
   },
 
   methods: {
+    logIn(email,password){
+      axios
+
+    
+        .post("http://0.0.0.0:3000/v1/login", {
+
+          email: email,
+          password:password
+        })
+        .then(response => {
+          if(response.data.message=="auth failed"){
+          console.log(response.data)
+          }else{
+    console.log(response.data.token)
+
+          }
+   
+     
+        });
+    
+    },
     closeModal () {
       this.$store.commit('showLoginModal', false);
     },

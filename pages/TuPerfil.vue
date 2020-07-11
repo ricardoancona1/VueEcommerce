@@ -13,26 +13,26 @@
     <section>
       
       <b-field horizontal label="Nombre">
-        <b-input placeholder="Ingresa tu nombre"></b-input>
+        <b-input  v-model="name" placeholder="Ingresa tu nombre"></b-input>
         <b-field horizontal label="Apellidos">
-        <b-input placeholder="Ingresa tus Apellidos"></b-input>
+        <b-input  v-model="lastName" placeholder="Ingresa tus Apellidos"></b-input>
       </b-field>
       </b-field>
 
-      <b-field label="Fecha de Nacimiento" >
-        <b-datepicker placeholder="Seleccione una fecha" icon="calendar-today" ></b-datepicker>
+      <b-field   v-model="birthday" label="Fecha de Nacimiento" >
+        <b-datepicker  placeholder="Seleccione una fecha" icon="calendar-today" ></b-datepicker>
       </b-field>
 
-      <b-field label="Dirección">
-        <b-input placeholder="Calle y Número ( Incluir Numero Interior )"></b-input>
+      <b-field  label="Dirección">
+        <b-input  v-model="direccion" placeholder="Calle y Número ( Incluir Numero Interior )"></b-input>
       </b-field>
 
-      <b-field label="Colonia">
+      <b-field  label="Colonia">
         <b-input placeholder="Ejemplo: Col.Pensiones"></b-input>
       </b-field>
 
-      <b-field label="Ciudad">
-        <b-input placeholder="Ejemplo: Merida"></b-input>
+      <b-field  label="Ciudad">
+        <b-input v-model="ciudad" placeholder="Ejemplo: Merida"></b-input>
       </b-field>
 
       <b-field label="Pais/Region">
@@ -40,7 +40,7 @@
       </b-field>
 
       <b-field label="Estado">
-       <b-select placeholder="Selecciona un Estado" icon="account">
+       <b-select value=CHP v-model="estado" placeholder="Selecciona un Estado" icon="account">
 	<option value="DIF">Distrito Federal</option>
 	<option value="AGS">Aguascalientes</option>
 	<option value="BCN">Baja California</option>
@@ -81,7 +81,7 @@
       </b-field>
 
       <b-field label="Teléfono">
-        <b-input placeholder="Ingresa tu numero de Celular"></b-input>
+        <b-input v-model="phone" placeholder="Ingresa tu numero de Celular"></b-input>
       </b-field>
   <br>
       <div class="buttons">
@@ -98,6 +98,7 @@
 import Vue from 'vue'
 import navbar from '../components/others/navbar'
 import Buefy from 'buefy'
+import axios from "axios";
 import 'buefy/dist/buefy.css'
 Vue.use(Buefy);
 Vue.config.productionTip = false
@@ -107,7 +108,45 @@ export default {
   name: "ModificarPerfil",
   components:{
       navbar
+  },
+  mounted(){
+    axios
+      .get("http://127.0.0.1:3000/v1/adduser/7", {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        this.name=response.data.name
+        this.lastName=response.data.lastName
+        this.email=response.data.email
+        this.password=response.data.password
+        this.direccion=response.data.direccion
+        this.phone=response.data.phone
+        this.birthday=response.data.birthday
+        this.ciudad=response.data.ciudad
+        this.estado=response.data.estado
+        this.name=response.data.name
+        
+      });
+
+  },
+data(){
+  return{
+    name:"",
+    lastName:"",
+    email:"",
+    password:"",
+    direccion:"",
+    phone:"",
+    birthday:"",
+    ciudad:"",
+    estado:""
+
+
+
   }
+}
 };
 
 </script>

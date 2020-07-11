@@ -39,15 +39,15 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-       <div v-for="product in productos" :key="product.id">
-	    <button
-          v-show="productos.length > 0 && !isCheckoutSection"
-          class="button is-info"
-          @click="onNextBtn(product.id)"
-        >
-          {{ buyLabel }}
-        </button>
-       </div>
+        <div v-for="product in productos" :key="product.id">
+          <button
+            v-show="productos.length > 0 && !isCheckoutSection"
+            class="button is-info"
+            @click="onNextBtn(product.id)"
+          >
+            {{ buyLabel }}
+          </button>
+        </div>
         <button
           v-if="isCheckoutSection"
           class="button is-info"
@@ -55,7 +55,6 @@
         >
           {{ closeLabel }}
         </button>
-
       </footer>
     </div>
   </div>
@@ -72,9 +71,9 @@ export default {
       removeLabel: "Remover del carrito",
       cartEmptyLabel: "Tu carrito esta vacío",
       closeLabel: "Cerrar",
-	  isCheckoutSection: false,
-	  usuarioID:1,
-	  productoID:"",
+      isCheckoutSection: false,
+      usuarioID: 1,
+      ids: []
     };
   },
 
@@ -83,8 +82,8 @@ export default {
       return this.$store.getters.productsAdded;
     },
     productos() {
-		let carrito = this.$store.getters.carrito;
-      return carrito
+      let carrito = this.$store.getters.carrito;
+      return carrito;
     },
     openModal() {
       if (this.$store.getters.isCheckoutModalOpen) {
@@ -126,13 +125,20 @@ export default {
 
   methods: {
     comprar(id) {
+      for(let i =0;i<this.productos.length;i++){
+        
+        this.ids[i]=this.productos[i].id
+        console.log(this.ids[i])
+      }
       axios
+
+    
         .post("http://0.0.0.0:3000/v1/ventas", {
+
           usuarioID: 1,
-          productoID: id
+          productoID:this.ids
         })
-        .then(response => {
-        });
+        .then(response => {});
     },
     closeModal(reloadPage) {
       this.$store.commit("showCheckoutModal", false);
@@ -151,12 +157,11 @@ export default {
     },
     onNextBtn(id) {
       if (this.isUserLoggedIn) {
-		this.isCheckoutSection = true;
-		this.comprar(id)
+        this.isCheckoutSection = true;
+        this.comprar(id);
       } else {
         this.$store.commit("showCheckoutModal", false);
-		this.$store.commit("showLoginModal", true);
-		
+        this.$store.commit("showLoginModal", true);
       }
     },
     onPrevBtn() {
