@@ -1,125 +1,105 @@
-import axios from "axios"
+import axios from "axios";
 
-
- function conexion (){
- return  axios
+function conexion() {
+  return axios
     .get("http://127.0.0.1:3000/v1/product", {
       headers: {
         "Content-Type": "application/json"
       }
     })
     .then(response => {
-      return response.data.listProducts[0].descripcion
-   
-     // return 'hola'
-    })
-
+      return response.data.listProducts[0].descripcion;
+    });
 }
 
-export let arreglo=[]
+export let arreglo = [];
 
-let userToken= conexion()
-userToken.then(function(result){
-//console.log(result)
-arreglo[0]=result
-//console.log(arreglo[0])
-
-state().products[0].description=result
-return arreglo[0]
-})
+let userToken = conexion();
+userToken.then(function(result) {
+  arreglo[0] = result;
+  state().products[0].description = result;
+  return arreglo[0];
+});
 
 export let state = () => ({
- 
-  carrito:[],
+  email: "",
+  carrito: [],
+  productos: [],
   products: [
-
-    
     {
-     
-    //  descripcion:'asd',
       id: 1,
       title: 2,
-      description: '',
-      price:123,
+      description: "",
+      price: 123,
       ratings: 3,
       reviews: 5,
       isAddedToCart: false,
       isAddedBtn: false,
       isFavourite: false,
-      quantity: 1,
+      quantity: 1
       //imgUrl:''
-    //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
-      
+      //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
     },
     {
-     
       //  descripcion:'asd',
-        id: 2,
-        title: 2,
-        description: '',
-        price:123,
-        ratings: 3,
-        reviews: 5,
-        isAddedToCart: false,
-        isAddedBtn: false,
-        isFavourite: false,
-        quantity: 1,
-        //imgUrl:''
+      id: 2,
+      title: 2,
+      description: "",
+      price: 123,
+      ratings: 3,
+      reviews: 5,
+      isAddedToCart: false,
+      isAddedBtn: false,
+      isFavourite: false,
+      quantity: 1
+      //imgUrl:''
       //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
-        
-      },
-      {
-     
-        //  descripcion:'asd',
-          id: 3,
-          title: 3,
-          description: '',
-          price:123,
-          ratings: 3,
-          reviews: 5,
-          isAddedToCart: false,
-          isAddedBtn: false,
-          isFavourite: false,
-          quantity: 1,
-          //imgUrl:''
-        //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
-          
-        },
-        {
-     
-          //  descripcion:'asd',
-            id: 4,
-            title: 3,
-            description: '',
-            price:123,
-            ratings: 3,
-            reviews: 5,
-            isAddedToCart: false,
-            isAddedBtn: false,
-            isFavourite: false,
-            quantity: 1,
-            //imgUrl:''
-          //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
-            
-          }
-      
-    
-   
+    },
+    {
+      //  descripcion:'asd',
+      id: 3,
+      title: 3,
+      description: "",
+      price: 123,
+      ratings: 3,
+      reviews: 5,
+      isAddedToCart: false,
+      isAddedBtn: false,
+      isFavourite: false,
+      quantity: 1
+      //imgUrl:''
+      //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
+    },
+    {
+      //  descripcion:'asd',
+      id: 4,
+      title: 3,
+      description: "",
+      price: 123,
+      ratings: 3,
+      reviews: 5,
+      isAddedToCart: false,
+      isAddedBtn: false,
+      isFavourite: false,
+      quantity: 1
+      //imgUrl:''
+      //  imgUrl:'https://m.media-amazon.com/images/I/61IVODycUCL._AC_UL480_FMwebp_QL65_.jpg'
+    }
   ],
   userInfo: {
     isLoggedIn: false,
     isSignedUp: false,
     hasSearched: false,
-    name: '',
-    productTitleSearched: ''
+    name: "",
+    productTitleSearched: ""
   },
   systemInfo: {
     openLoginModal: false,
     openSignupModal: false,
     openCheckoutModal: false
-  }
-})
-
+  },
+  token: ""
+});
 
 export const getters = {
   productsAdded: state => {
@@ -128,7 +108,7 @@ export const getters = {
     });
   },
   carrito: state => {
- return state.carrito
+    return state.carrito;
   },
 
   productsAddedToFavourite: state => {
@@ -137,7 +117,7 @@ export const getters = {
     });
   },
   getProductById: state => id => {
-    return state.products.find(product => product.id == id);
+    return state.productos.find(product => product.uuid == id);
   },
   isUserLoggedIn: state => {
     return state.userInfo.isLoggedIn;
@@ -159,17 +139,37 @@ export const getters = {
   },
   quantity: state => {
     return state.products.quantity;
+  },
+  getToken: state => {
+    return state.token;
+  },
+  getEmail: state => {
+    return state.email;
+  },
+  getProductos: state => {
+    return state.productos;
   }
-}
+};
 
 export const mutations = {
-  AniadirAlCarrito: (state,info) => {
-    state.carrito.push(info)
+  productos: (state, info) => {
+      state.productos=[]
+    state.productos.push(info);
+  },
+  AniadirAlCarrito: (state, info) => {
+    state.carrito.push(info);
   },
   addToCart: (state, id) => {
     state.products.forEach(el => {
       if (id === el.id) {
         el.isAddedToCart = true;
+      }
+    });
+  },
+  setAddedBtn1: (state, data) => {
+    state.productos[0].forEach(el => {
+      if (data.id === el.id) {
+        el.addedToCart = data.status;
       }
     });
   },
@@ -181,11 +181,7 @@ export const mutations = {
     });
   },
   removeFromCart: (state, id) => {
-    state.products.forEach(el => {
-      if (id === el.id) {
-        el.isAddedToCart = false;
-      }
-    });
+    state.carrito.pop(id);
   },
   removeProductsFromFavourite: state => {
     state.products.filter(el => {
@@ -200,6 +196,12 @@ export const mutations = {
   },
   setHasUserSearched: (state, hasSearched) => {
     state.userInfo.hasSearched = hasSearched;
+  },
+  setToken: (state, token) => {
+    state.token = token;
+  },
+  setEmail: (state, email) => {
+    state.email = email;
   },
   setUserName: (state, name) => {
     state.userInfo.name = name;
@@ -238,9 +240,9 @@ export const mutations = {
     });
   },
   SET_USER(state, authUser) {
-    state.authUser = authUser
+    state.authUser = authUser;
   }
-}
+};
 /* 
 export const actions = {
   async nuxtServerInit({ commit }) {

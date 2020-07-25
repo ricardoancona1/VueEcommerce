@@ -80,9 +80,11 @@
           <button
             class="button is-warning"
             v-if="!agregadoAlCarrito"
-            @click="aniadirAlCarrito(producto.nombre, producto.precio,producto.id)"
+            @click="
+              aniadirAlCarrito(producto.nombre, producto.precio)
+            "
           >
-            Añadir al carrito 
+            Añadir al carrito
           </button>
           <button
             class="button is-text"
@@ -120,14 +122,17 @@ export default {
       productos: [],
       producto: {},
       carrito: [],
-      agregadoAlCarrito:false
+      agregadoAlCarrito: false,
+      id:this.$route.params.id
     };
   },
 
   mounted() {
     let uuid;
-    uuid = this.$route.params.uuid;
-   
+    uuid = this.$route.params.id;
+    
+    console.log("route params",this.$route.params)
+
     axios
       .get(`http://127.0.0.1:3000/v1/product/${uuid}`, {
         headers: {
@@ -136,11 +141,10 @@ export default {
       })
       .then(response => {
         this.producto = response.data;
-     
       });
 
     this.product = this.$store.getters.getProductById(this.$route.params.id);
-
+    //this.agregadoAlCarrito=product.addedToCart
     //  this.selected = this.product.quantity;
 
     for (let i = 1; i <= 20; i++) {
@@ -155,18 +159,24 @@ export default {
   },
 
   methods: {
-    aniadirAlCarrito(nombre,precio,id) {
-      console.log('hola')
-      //this.carrito.push(info);
+    aniadirAlCarrito(nombre, precio) {
+      this.id=this.$route.params.uuid
+      console.log("id: ",this.id)
+      let producto=this.$store.state.productos
+      this.agregadoAlCarrito=producto[0].find(product => product.uuid == this.id);
+      console.log( "aqui",this.agregadoAlCarrito.addedToCart)
       let data = {
-        id: id,
+        id: this.id,
         status: true
       };
-      let info={
-        nombre:nombre,
-        precio:precio}
-    this.agregadoAlCarrito=true
-     this.$store.commit("AniadirAlCarrito", info);
+      let info = {
+        id:this.id,
+        nombre: nombre,
+        precio: precio,
+        addedToCart:true
+      };
+      this.$store.commit("AniadirAlCarrito", info);
+       this.$store.commit("setAddedBtn1", data);
     },
     addToCart(id) {
       let data = {
@@ -174,12 +184,17 @@ export default {
         status: true
       };
       this.$store.commit("addToCart", id);
-      this.$store.commit("setAddedBtn", data);
+      this.$store.commit("setAddedBtn1", data);
     },
     removeFromCart(id) {
-  this.agregadoAlCarrito=false
+    this.$store.commit("removeFromCart", id);
+    this.$store.commit("setAddedBtn1", data);
     },
-    onSelectQuantity(id) { //para agregar varios productos a la vez 
+    getAddedToCart(id){
+
+    },
+    onSelectQuantity(id) {
+      //para agregar varios productos a la vez
       let data = {
         id: id
         //  quantity: this.selected

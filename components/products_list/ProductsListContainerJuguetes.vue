@@ -35,7 +35,14 @@ export default {
         }
       })
       .then(response => {
-        this.productos = response.data.productos;
+              for (let i = 0; i < response.data.listProducts.length; i++) {
+          Object.assign(response.data.listProducts[i], { addedToCart: false });
+        }
+        let info = response.data.listProducts;
+        console.log("info ",info)
+     
+        this.$store.commit("productos",info);
+        this.productos = this.$store.state.productos[0];
         
       });
 

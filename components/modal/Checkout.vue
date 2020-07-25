@@ -125,19 +125,24 @@ export default {
 
   methods: {
     comprar(id) {
-      for(let i =0;i<this.productos.length;i++){
-        
-        this.ids[i]=this.productos[i].id
-        console.log(this.ids[i])
+      for (let i = 0; i < this.productos.length; i++) {
+        this.ids[i] = this.productos[i].id;
+        console.log("these are the ids", this.ids[i]);
       }
       axios
+        .post(
+          "http://0.0.0.0:3000/v1/ventas",
 
-    
-        .post("http://0.0.0.0:3000/v1/ventas", {
-
-          usuarioID: 1,
-          productoID:this.ids
-        })
+          {
+            productoID: this.ids
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: this.$store.getters.getToken
+            }
+          }
+        )
         .then(response => {});
     },
     closeModal(reloadPage) {
