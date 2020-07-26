@@ -140,21 +140,27 @@
               </p>
             </div>
           </div>
-       
+
           <div v-if="isUserSignedUp" class="level">
             <div class="level-item has-text-centered">
               <div>
                 <p class="title">Bienvenido {{ name }}!</p>
-                <br>
-                <h1>Para empezar a comprar, completa el registro en la seccion Tu perfil</h1>
+                <br />
+                <h1>
+                  Para empezar a comprar, completa el registro en la seccion Tu
+                  perfil
+                </h1>
               </div>
             </div>
           </div>
-             <div v-else-if="status==200" class="level">
+          <div v-else-if="status == 200" class="level">
             <div class="level-item has-text-centered">
               <div>
                 <p class="title">Ooops.. {{ name }}!</p>
-                <p class="heading">Parece que el correo ya esta ocupado por otro usuario, intente uno diferente</p>
+                <p class="heading">
+                  Parece que el correo ya esta ocupado por otro usuario, intente
+                  uno diferente
+                </p>
               </div>
             </div>
           </div>
@@ -183,7 +189,9 @@
 
 <script>
 import { isValidEmail } from "@/assets/validators";
+import swal from "sweetalert";
 import axios from "axios";
+import validaciones from "./validaciones"
 export default {
   name: "registration",
 
@@ -211,7 +219,7 @@ export default {
       highlightPasswordWithError: null,
       highlightRepeatPasswordWithError: null,
       isFormSuccess: false,
-      status:"",
+      status: ""
     };
   },
   computed: {
@@ -228,68 +236,124 @@ export default {
   },
 
   methods: {
-    enviarFormulario() {
+    setToken(token) {
+      this.$store.commit("setToken", token);
+    },
+    logIn(email, password) {
       axios
-        .post("http://127.0.0.1:3000/v1/adduser", {
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          rollID: 1
+        .post("http://0.0.0.0:3000/v1/login", {
+          email: email,
+          password: password
         })
         .then(response => {
-        if(response.status==200){
-               console.log(response.status)
-               this.status=200
+          this.httpStatusCode = response.status;
+          if (this.httpStatusCode == 202) {
+            swal("Datos incorrectos, intente de nuevo", "", "error");
+          } else {
+            this.setToken(response.data.token);
+            if (this.email && this.password && this.httpStatusCode == 200) {
+              this.highlightEmailWithError = false;
+              this.highlightPasswordWithError = false;
+              this.isFormSuccess = true;
+              this.$store.commit("isUserLoggedIn", this.isFormSuccess);
+            } else {
+              console.log("error1");
+            }
+
+            if (!this.email) {
+              this.highlightEmailWithError = true;
+
+              if (this.email && !isValidEmail(this.email)) {
+                this.emailRequiredLabel = this.emailNotValidLabel;
+              }
+            } else {
+              this.highlightEmailWithError = false;
+            }
+
+            if (!this.password) {
+              this.highlightPasswordWithError = true;
+            } else {
+              this.highlightPasswordWithError = false;
+            }
+          }
+        });
+    },
+    enviarFormulario() {
+      if ((this.password = this.repeatPassword)) {
+        if(!validaciones.validarString(this.name)){
+          swal("Escriba un nombre valido","solo se permiten letras","error")
         }
-        if(response.status==201){
-               console.log(response.status)
-               this.status=201
+        axios
+          .post("http://127.0.0.1:3000/v1/adduser", {
+            name: this.name,
+            email: this.email,
+            password: this.password,
+            rollID: 1
+          })
+          .then(response => {
+            if (response.status == 200) {
+              console.log(response.status);
+              this.status = 200;
+            }
+            if (response.status == 201) {
+              console.log(response.status);
+              this.status = 201;
+            }
+          });
+
+        if (
+          this.name &&
+          this.email &&
+          this.password &&
+          this.repeatPassword &&
+          this.status == "201"
+        ) {
+          this.highlightEmailWithError = false;
+          this.highlightPasswordWithError = false;
+          this.isFormSuccess = true;
+          this.$store.commit("setUserName", this.name);
+          this.$store.commit("isUserSignedUp", this.isFormSuccess);
+          this.$store.commit("isUserLoggedIn", this.isFormSuccess);
+          console.log(this.email,"  ", this.password)
+          this.logIn(this.email, this.password);
         }
 
-        });
+        if (!this.name) {
+          this.highlightNameWithError = true;
+        } else {
+          this.highlightNameWithError = false;
+        }
+
+        if (!this.email) {
+          this.highlightEmailWithError = true;
+
+          if (this.email && !isValidEmail(this.email)) {
+            this.emailErrorLabel = this.emailNotValidLabel;
+          }
+        } else {
+          this.highlightEmailWithError = false;
+        }
+
+        if (!this.password) {
+          this.highlightPasswordWithError = true;
+        } else {
+          this.highlightPasswordWithError = false;
+        }
+
+        if (!this.repeatPassword) {
+          this.highlightRepeatPasswordWithError = true;
+        } else {
+          this.highlightRepeatPasswordWithError = false;
+        }
+      } else {
+        swal("Las contraseñas no coinciden", "", "error");
+      }
     },
     closeModal() {
       this.$store.commit("showSignupModal", false);
     },
     checkForm(e) {
       e.preventDefault();
-
-      if (this.name && this.email && this.password && this.repeatPassword && this.status=="201") {
-        this.highlightEmailWithError = false;
-        this.highlightPasswordWithError = false;
-        this.isFormSuccess = true;
-        this.$store.commit("setUserName", this.name);
-        this.$store.commit("isUserSignedUp", this.isFormSuccess);
-        this.$store.commit("isUserLoggedIn", this.isFormSuccess);
-      }
-
-      if (!this.name) {
-        this.highlightNameWithError = true;
-      } else {
-        this.highlightNameWithError = false;
-      }
-
-      if (!this.email) {
-        this.highlightEmailWithError = true;
-
-        if (this.email && !isValidEmail(this.email)) {
-          this.emailErrorLabel = this.emailNotValidLabel;
-        }
-      } else {
-        this.highlightEmailWithError = false;
-      }
-
-      if (!this.password) {
-        this.highlightPasswordWithError = true;
-      } else {
-        this.highlightPasswordWithError = false;
-      }
-
-      if (!this.repeatPassword) {
-        this.highlightRepeatPasswordWithError = true;
-      } else {
-        this.highlightRepeatPasswordWithError = false;
-      }
     },
     checkNameOnKeyUp(nameValue) {
       if (nameValue) {

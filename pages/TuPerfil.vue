@@ -145,6 +145,7 @@ import Buefy from "buefy";
 import axios from "axios";
 import "buefy/dist/buefy.css";
 import swal from "sweetalert";
+import validaciones from "../components/modal/validaciones"
 Vue.use(Buefy);
 Vue.config.productionTip = false;
 
@@ -162,7 +163,6 @@ export default {
         }
       })
       .then(response => {
-        console.log(this.birthday);
         if (
           response.data.message.birthday != null ||
           response.data.message.birthday != ""
@@ -180,11 +180,12 @@ export default {
         this.ciudad = response.data.message.ciudad;
         this.estado = response.data.message.estado;
         this.name = response.data.message.name;
-        this.colonia = response.data.message.colonia,
-        this.cp = response.data.message.cp;
-        this.genero=response.data.message.genero
+        (this.colonia = response.data.message.colonia),
+          (this.cp = response.data.message.cp);
+        this.genero = response.data.message.genero;
       });
   },
+
   data() {
     return {
       name: "",
@@ -200,27 +201,57 @@ export default {
       colonia: "",
       genero: "",
       date: new Date(),
-      genero:""
+      genero: ""
     };
   },
   methods: {
+    getData() {
+      axios
+        .get("http://127.0.0.1:3000/v1/adduser/7", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: this.$store.getters.getToken
+          }
+        })
+        .then(response => {
+          if (
+            response.data.message.birthday != null ||
+            response.data.message.birthday != ""
+          ) {
+            this.birthday = this.formatDateYYYMMDDToObject(
+              response.data.message.birthday
+            );
+          }
+          this.name = response.data.message.name;
+          this.lastName = response.data.message.lastName;
+          this.email = response.data.message.email;
+          this.password = response.data.message.password;
+          this.direccion = response.data.message.direccion;
+          this.phone = response.data.message.phone;
+          this.ciudad = response.data.message.ciudad;
+          this.estado = response.data.message.estado;
+          this.name = response.data.message.name;
+          (this.colonia = response.data.message.colonia),
+            (this.cp = response.data.message.cp);
+          this.genero = response.data.message.genero;
+        });
+    },
     formatDateObjectToYYYMMDD(date) {
       var d = new Date(date),
         month = "" + (d.getMonth() + 1),
         day = "" + d.getDate(),
         year = d.getFullYear();
-     
 
       if (month.length < 2) month = "0" + month;
       if (day.length < 2) day = "0" + day;
 
-      return [year, month, day].join("-")+" "+"18:00:00.000 +00:00";
+      return [year, month, day].join("-") + " " + "18:00:00.000 +00:00";
     },
-    formatDateYYYMMDDToObject(date) {  
-      let date1=new Date(date); 
+    formatDateYYYMMDDToObject(date) {
+      let date1 = new Date(date);
       console.log("aqui", date1);
 
-      return date1
+      return date1;
 
       //  return date1;
     },
@@ -232,6 +263,28 @@ export default {
       swal("Debes completar el formulario", "", "error");
     },
     enviarFormulario() {
+      let flag=true
+      if (!validaciones.validarString(this.name)) {
+        swal("Escriba un nombre valido", "solo se permiten letras", "error");
+        flag = false
+      } 
+        if (!validaciones.validarString(this.lastName)) {
+        swal("Escriba apellidos validos", "solo se permiten letras", "error");
+          flag = false
+      } 
+        if (!validaciones.validarString(this.ciudad)) {
+        swal("Escriba una ciudad valida", "solo se permiten letras", "error");
+          flag = false
+      } 
+        if (validaciones.validarString(this.cp)) {
+        swal("Escriba un Codigo postal valido", "solo se permiten numeros", "error");
+          flag = false
+       } 
+        if (validaciones.validarString(this.phone)) {
+        swal("Escriba un  numero telefonico  valido", "solo se permiten numeros", "error");
+         flag = false
+       }
+       if(flag){
       axios
         .put("http://0.0.0.0:3000/v1/adduser/7", {
           name: this.name,
@@ -239,23 +292,25 @@ export default {
           email: this.email,
           direccion: this.direccion,
           ciudad: this.ciudad,
-          estado:this.estado,
+          estado: this.estado,
           colonia: this.colonia,
           cp: this.cp,
           birthday: this.formatDateObjectToYYYMMDD(this.birthday),
-          phone:this.phone,
-          genero:this.genero
+          phone: this.phone,
+          genero: this.genero
         })
         .then(response => {
           if (response.status == 200) {
+            this.$store.commit("setToken", response.data.token);
+            this.getData();
             this.mostrarMensajeExito();
           } else {
             mostrarMensajeError();
           }
         });
-    }
-  }
-};
+    }}}}
+  
+
 </script>
 
 <style scoped></style>

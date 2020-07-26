@@ -112,7 +112,7 @@
 <script>
 import { isValidEmail } from "@/assets/validators";
 import axios from "axios";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 export default {
   name: "login",
 
@@ -131,7 +131,7 @@ export default {
       highlightEmailWithError: null,
       highlightPasswordWithError: null,
       isFormSuccess: false,
-      httpStatusCode:""
+      httpStatusCode: ""
     };
   },
 
@@ -159,16 +159,35 @@ export default {
           password: password
         })
         .then(response => {
-          if (response.status == 401) {
-            //swal("La autentificación falló","","error")
-            //console.log(response.data);
-             swal("Datos incorrectos, intente de nuevo","","error")
-            this.httpStatusCode=response.status
-            console.log("this is the status code", this.httpStatusCode)
+          this.httpStatusCode = response.status;
+          if (this.httpStatusCode == 202) {
+            swal("Datos incorrectos, intente de nuevo", "", "error");
           } else {
             this.setToken(response.data.token);
-            this.httpStatusCode=response.status
-            console.log("this is the status code", this.httpStatusCode)
+            if (this.email && this.password && this.httpStatusCode == 200) {
+              this.highlightEmailWithError = false;
+              this.highlightPasswordWithError = false;
+              this.isFormSuccess = true;
+              this.$store.commit("isUserLoggedIn", this.isFormSuccess);
+            } else {
+              console.log("error1");
+            }
+
+            if (!this.email) {
+              this.highlightEmailWithError = true;
+
+              if (this.email && !isValidEmail(this.email)) {
+                this.emailRequiredLabel = this.emailNotValidLabel;
+              }
+            } else {
+              this.highlightEmailWithError = false;
+            }
+
+            if (!this.password) {
+              this.highlightPasswordWithError = true;
+            } else {
+              this.highlightPasswordWithError = false;
+            }
           }
         });
     },
@@ -177,34 +196,6 @@ export default {
     },
     checkForm(e) {
       e.preventDefault();
-    
-
-      if (this.email && this.password && this.httpStatusCode==200) {
-        this.highlightEmailWithError = false;
-        this.highlightPasswordWithError = false;
-        this.isFormSuccess = true;
-        this.$store.commit("isUserLoggedIn", this.isFormSuccess);
-      }else{
-       // swal("Datos incorrectos, intente de nuevo","","error")
-       swal("Datos incorrectos, intente de nuevo","","error")
-        console.log("error1")
-     }
-
-      if (!this.email) {
-        this.highlightEmailWithError = true;
-
-        if (this.email && !isValidEmail(this.email)) {
-          this.emailRequiredLabel = this.emailNotValidLabel;
-        }
-      } else {
-        this.highlightEmailWithError = false;
-      }
-
-      if (!this.password) {
-        this.highlightPasswordWithError = true;
-      } else {
-        this.highlightPasswordWithError = false;
-      }
     },
     checkEmailOnKeyUp(emailValue) {
       if (emailValue && isValidEmail(emailValue)) {

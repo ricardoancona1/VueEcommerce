@@ -44,7 +44,7 @@ export default {
         }
         let info = response.data.listProducts;
         this.$store.commit("productos", info);
-
+        
         this.productos = this.$store.state.productos[0];
       });
   },

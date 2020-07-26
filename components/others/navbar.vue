@@ -33,7 +33,7 @@
       </a>
 
         </router-link>
-              <router-link to="/TuPerfil">
+              <router-link to="/TuPerfil" v-if="isUserLoggedIn">
       <a class="navbar-item">
         Tu Perfil
       </a>
@@ -47,3 +47,19 @@
 </nav>
 
 </template>
+<script>
+export default {
+  data(){
+    return{
+      userLoggedIn:this.$store.getters.isUserLoggedIn
+
+    }
+
+  },
+  computed: {
+		isUserLoggedIn () {
+			return this.$store.getters.isUserLoggedIn;
+		}
+	}
+}
+</script>
