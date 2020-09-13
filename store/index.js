@@ -2,7 +2,7 @@ import axios from "axios";
 
 function conexion() {
   return axios
-    .get("http://127.0.0.1:3000/v1/product", {
+    .get("http://192.168.1.77:3000/v1/product", {
       headers: {
         "Content-Type": "application/json"
       }
@@ -25,6 +25,7 @@ export let state = () => ({
   email: "",
   carrito: [],
   productos: [],
+  productosIniciales:[],
   products: [
     {
       id: 1,
@@ -90,6 +91,7 @@ export let state = () => ({
     isLoggedIn: false,
     isSignedUp: false,
     hasSearched: false,
+    hasErased: false,
     name: "",
     productTitleSearched: ""
   },
@@ -117,7 +119,7 @@ export const getters = {
     });
   },
   getProductById: state => id => {
-    return state.productos.find(product => product.uuid == id);
+    return state.productos[0].find(product => product.id == id);
   },
   isUserLoggedIn: state => {
     return state.userInfo.isLoggedIn;
@@ -156,6 +158,10 @@ export const mutations = {
       state.productos=[]
     state.productos.push(info);
   },
+  productosIniciales: (state, info) => {
+    state.productosIniciales=[]
+  state.productosIniciales.push(info);
+},
   AniadirAlCarrito: (state, info) => {
     state.carrito.push(info);
   },
@@ -167,11 +173,27 @@ export const mutations = {
     });
   },
   setAddedBtn1: (state, data) => {
-    state.productos[0].forEach(el => {
+    if(!state.productos[0]){
+      console.log("no")
+      state.productos[0]=[]
+   //   state.productos[0].push(data)
+      state.productos[0].forEach(el => {
+        console.log(el.id)
+     if (data.id === el.id) {
+      
+       el.addedToCart = data.status;
+     }
+   });}
+    if(state.productos[0]){   
+      console.log("si")
+
+       state.productos[0].forEach(el => {
+      
       if (data.id === el.id) {
         el.addedToCart = data.status;
       }
-    });
+    });}
+
   },
   setAddedBtn: (state, data) => {
     state.products.forEach(el => {
@@ -182,6 +204,9 @@ export const mutations = {
   },
   removeFromCart: (state, id) => {
     state.carrito.pop(id);
+  },
+  emptyCart: (state) => {
+    state.carrito=[]
   },
   removeProductsFromFavourite: state => {
     state.products.filter(el => {
@@ -196,6 +221,9 @@ export const mutations = {
   },
   setHasUserSearched: (state, hasSearched) => {
     state.userInfo.hasSearched = hasSearched;
+  },
+  setHasUserErased: (state, hasErased) => {
+    state.userInfo.hasErased = hasErased;
   },
   setToken: (state, token) => {
     state.token = token;

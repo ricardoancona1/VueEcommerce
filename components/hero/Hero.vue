@@ -1,7 +1,7 @@
 <template> <!--HTML5 -->
 <div>
- <navbar></navbar>
-  <img v-bind:src="img" alt="No se encontro la imagen">
+ <navbar ></navbar>
+  <img v-bind:src="img" alt="No se encontro la imagen" class="column is-12 shadows">
   <br>
   <br>
 </div>
@@ -16,14 +16,11 @@ export default {
   },
   data(){
   return{
-   img: 'https://www.lego.com/cdn/cs/set/assets/blt6a73e8c21a7f6ee9/01-1508-Vehicles-Homepage--200511--Hero-Standard-Large-KeyVisual.jpg?fit=crop&format=jpg&quality=80&auto=webp&width=1600&height=500&dpr=1'
+   img:'http://192.168.1.77:3000/v1/settings/image'
   }
 },
 methods:{
-mostrarNuestrosProductos(){
-this.$router.push({ name: 'test' });
 
-}
 
 }
 } //JavaScript
@@ -37,5 +34,12 @@ this.$router.push({ name: 'test' });
     h1, h2 {
       color: black;
       
+    }
+    .shadows{
+        margin-right: 14px;
+  display: block;
+  box-shadow: 3px 3px 1px #ccc;
+  -webkit-box-shadow: 3px 3px 1px #ccc;
+  -moz-box-shadow: 3px 3px 1px #ccc;
     }
 </style>

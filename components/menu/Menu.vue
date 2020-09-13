@@ -23,20 +23,7 @@
 				</p>
 			</div>
 		</div>
-		<div v-if="isUserLoggedIn" class="navbar-item has-dropdown is-hoverable">
-			<a class="navbar-link">
-			Welcome {{ getUserName }}
-			</a>
-			<div class="navbar-dropdown is-boxed">
-				<nuxt-link class="navbar-item" :to="{ name: 'user-wishlist' }">
-					{{ wishlistLabel }}
-				</nuxt-link>
-				<hr class="navbar-divider">
-				<a class="navbar-item" @click="logout">
-					{{ logoutLabel }}
-				</a>
-			</div>
-		</div>
+
 	</div>
 </template>
 

@@ -2,15 +2,11 @@
   <div>
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <nuxt-link :to="{ name: 'index' }" class="navbar-item">
-          <h1 class="title is-3 is-flex-mobile"></h1>
+        <nuxt-link :to="{ name: 'index' }" >
+          <h1 class="title has-text-justified"></h1>
         </nuxt-link>
 
-        <a role="button" class="navbar-burger burger" @click="isMenuOpen = !isMenuOpen" aria-label="menu" aria-expanded="false">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
+
       </div>
 
       <div class="navbar-menu is-active">
@@ -31,9 +27,7 @@
             <a href="#" class="icon" :title="instagramTooltip">
               <i class="fa fa-instagram"></i>
             </a>
-            <a href="#" class="icon" :title="linkedinTooltip">
-              <i class="fa fa-linkedin"></i>
-            </a>
+ 
           </div>
           <div class="navbar-item shopping-cart" @click="showCheckoutModal">
             <span class="icon">
@@ -45,14 +39,14 @@
       </div>
 
       <!-- For mobile and tablet -->
-      <div v-show="isMenuOpen" class="navbar-end">
-        <VmMenu></VmMenu>
-      </div>
+  
+  
+    
 
       <!-- For desktop -->
-      <div class="navbar-end is-hidden-mobile">
+      
         <VmMenu></VmMenu>
-      </div>
+     
     </nav>
   </div>
 </template>
@@ -95,11 +89,14 @@
 </script>
 
 <style lang="scss" scoped>
+.hola{
+  padding-left:50 ;
+}
   .title {
     background: url('../../static/toyshop.png') no-repeat;
-    background-position: 50% 50%;
-    background-size: 170px;
-    width: 175px;
+    background-position: 0% 50%;
+    background-size: 200px;
+    width: 200px;
     height: 80px;
   }
   .shopping-cart {

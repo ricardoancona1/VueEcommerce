@@ -1,5 +1,8 @@
 <template>
+<div>
+   <navbar></navbar>
   <div class="section">
+   
     <div class="card is-clearfix columns">
       <figure class="card-image is-480x480 column is-one-thirds">
         <img v-bind:src="producto.imgUrl" alt="Placeholder image" />
@@ -8,16 +11,7 @@
         <div class="card-content__title">
           <h2 class="title is-4">
             {{ producto.nombre }}
-            <!--button class="button is-small" :title="removeFromFavouriteLabel" v-show="product.isFavourite" @click="removeFromFavourite(product.id)">
-                <span class="icon is-small">
-                  <i class="fa fa-heart"></i>
-                </span>
-              </button-->
-            <!--button class="button is-small" :title="addToFavouriteLabel" v-show="!product.isFavourite" @click="saveToFavorite(product.id)">
-                <span class="icon is-small">
-                  <i class="fa fa-heart-o"></i>
-                </span>
-              </button-->
+
           </h2>
         </div>
         <div class="card-content__text">
@@ -31,38 +25,10 @@
             <strong> Disponibles: {{ producto.disponibles }} </strong>
           </h2>
         </div>
-        <!--div class="card-content__ratings" v-if="product.rating === 1">
-            <i class="fa fa-star"></i>
-          </div>
-          <div class="card-content__ratings" v-else-if="product.rating === 2">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-          </div>
-          <div class="card-content__ratings" v-else-if="product.rating === 3">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-          </div>
-          <div class="card-content__ratings" v-else-if="product.rating === 4">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-          </div>
-          <div class="card-content__ratings" v-else-if="product.rating === 5">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-          </div-->
+
         <div class="card-content__reviews">
           <div class="is-pulled-left"></div>
-          <!--div class="select is-rounded is-small is-pulled-right">
-            <!--select @change="onSelectQuantity(product.id)" v-model="selected">
-                <option v-for="quantity in quantityArray" :value="quantity">{{ quantity }}</option>
-              </select>
-          </div-->
+
         </div>
         <div class="card-content__price is-pulled-left">
           <span class="title is-3"
@@ -70,37 +36,34 @@
           >
         </div>
         <div class="card-content__btn is-pulled-right">
-          <!--button
-            class="button is-warning"
-            v-if="!isAddedBtn"
-            @click="addToCart(product.id)"
-          >
-            {{ addToCartLabel }}
-          </button-->
+
           <button
             class="button is-warning"
-            v-if="!agregadoAlCarrito"
-            @click="
-              aniadirAlCarrito(producto.nombre, producto.precio)
-            "
+            v-if="!agregadoAlCarrito && producto.disponibles>0"
+            @click="aniadirAlCarrito(producto.nombre, producto.precio)"
           >
             Añadir al carrito
           </button>
           <button
             class="button is-text"
             v-if="agregadoAlCarrito"
-            @click="removeFromCart(producto.id)"
+            @click="removeFromCart()"
           >
             {{ removeFromCartLabel }}
           </button>
+          <div class="tags are-medium">
+          <span v-if="producto.disponibles<=0"  class="tag is-light is-active">Este producto no está disponible</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import axios from "axios";
+import navbar from "../../components/others/navbar"
 import { withVersioning, VersioningStrategy } from "axios-api-versioning";
 let uuid;
 export default {
@@ -111,7 +74,7 @@ export default {
 
     return /^\d+$/.test(params.id);
   },
-
+components:{navbar},
   data() {
     return {
       addToCartLabel: "Añadir al carrito",
@@ -123,18 +86,16 @@ export default {
       producto: {},
       carrito: [],
       agregadoAlCarrito: false,
-      id:this.$route.params.id
+      id: this.$route.params.id
     };
   },
 
-  mounted() {
-    let uuid;
-    uuid = this.$route.params.id;
-    
-    console.log("route params",this.$route.params)
+  mounted() { 
+    let id;
+    id = this.$route.params.id;
 
     axios
-      .get(`http://127.0.0.1:3000/v1/product/${uuid}`, {
+      .get(`http://192.168.1.77:3000/v1/productById/${id}`, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -143,9 +104,6 @@ export default {
         this.producto = response.data;
       });
 
-    this.product = this.$store.getters.getProductById(this.$route.params.id);
-    //this.agregadoAlCarrito=product.addedToCart
-    //  this.selected = this.product.quantity;
 
     for (let i = 1; i <= 20; i++) {
       this.quantityArray.push(i);
@@ -154,45 +112,45 @@ export default {
 
   computed: {
     isAddedBtn() {
-      return this.product.isAddedBtn;
+      return this.producto.isAddedBtn;
     }
   },
 
   methods: {
     aniadirAlCarrito(nombre, precio) {
-      this.id=this.$route.params.uuid
-      console.log("id: ",this.id)
-      let producto=this.$store.state.productos
-      this.agregadoAlCarrito=producto[0].find(product => product.uuid == this.id);
-      console.log( "aqui",this.agregadoAlCarrito.addedToCart)
+      this.id = this.producto.uuid;
+
+      let producto = this.$store.state.productos;
+      // this.agregadoAlCarrito=producto[0].find(product => product.uuid == this.id);
+      console.log(producto)
+      this.agregadoAlCarrito = this.producto;
+
       let data = {
         id: this.id,
         status: true
       };
       let info = {
-        id:this.id,
+        id: this.id,
         nombre: nombre,
         precio: precio,
-        addedToCart:true
+        addedToCart: true
       };
+
       this.$store.commit("AniadirAlCarrito", info);
-       this.$store.commit("setAddedBtn1", data);
-    },
-    addToCart(id) {
-      let data = {
-        id: id,
-        status: true
-      };
-      this.$store.commit("addToCart", id);
       this.$store.commit("setAddedBtn1", data);
     },
-    removeFromCart(id) {
-    this.$store.commit("removeFromCart", id);
-    this.$store.commit("setAddedBtn1", data);
-    },
-    getAddedToCart(id){
 
+    removeFromCart() {
+      this.agregadoAlCarrito=false
+      let id = this.producto.uuid;
+      let data = {
+        id:id,
+        status: true
+      };
+      this.$store.commit("removeFromCart", id);
+      this.$store.commit("setAddedBtn1", data);
     },
+    getAddedToCart(id) {},
     onSelectQuantity(id) {
       //para agregar varios productos a la vez
       let data = {

@@ -154,25 +154,21 @@ export default {
     },
     logIn(email, password) {
       axios
-        .post("http://0.0.0.0:3000/v1/login", {
+        .post("http://192.168.1.77:3000/v1/login", {
           email: email,
           password: password
         })
         .then(response => {
           this.httpStatusCode = response.status;
-          if (this.httpStatusCode == 202) {
-            swal("Datos incorrectos, intente de nuevo", "", "error");
-          } else {
+
+   
             this.setToken(response.data.token);
             if (this.email && this.password && this.httpStatusCode == 200) {
               this.highlightEmailWithError = false;
               this.highlightPasswordWithError = false;
               this.isFormSuccess = true;
               this.$store.commit("isUserLoggedIn", this.isFormSuccess);
-            } else {
-              console.log("error1");
-            }
-
+            } 
             if (!this.email) {
               this.highlightEmailWithError = true;
 
@@ -188,8 +184,11 @@ export default {
             } else {
               this.highlightPasswordWithError = false;
             }
-          }
-        });
+          
+        }).catch(err=>{
+               
+               swal("Usuario o contraseña no validos","Verifique sus credeciales","error")
+        })
     },
     closeModal() {
       this.$store.commit("showLoginModal", false);

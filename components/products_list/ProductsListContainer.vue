@@ -1,9 +1,10 @@
 <template>
   <div class="columns is-centered is-multiline">
-    <div
+    <div v-on:keyup.delete="reestablecerProductos"
       class="card column is-one-quarter"
       v-for="product in productos"
       :key="product.id"
+
     >
       <VmProducts :product="product"></VmProducts>
     </div>
@@ -28,12 +29,13 @@ export default {
       id: "",
       noProductLabel: "No se encontraron productos",
       productsFiltered: [],
-      productos: []
+      productos: [],
+      productosIniciales: [],
     };
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:3000/v1/product", {
+      .get("http://192.168.1.77:3000/v1/product", {
         headers: {
           "Content-Type": "application/json"
         }
@@ -44,8 +46,9 @@ export default {
         }
         let info = response.data.listProducts;
         this.$store.commit("productos", info);
-        
+        this.productosIniciales=this.$store.commit("productosIniciales", info);
         this.productos = this.$store.state.productos[0];
+       
       });
   },
   computed: {
@@ -58,22 +61,20 @@ export default {
     }
   },
   methods: {
-    mostrarNuestrosProductos() {
-      axios
-        .get("http://127.0.0.1:3000/v1/categoria/NuestrosProductos", {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(response => {
-          this.productos = response.data.listProducts;
-        });
-    },
+
     getProductByTitle() {
-      let listOfProducts = this.productos,
+      if( this.$store.state.userInfo.hasErased){
+        console.log("ha borrado")
+        
+        this.$store.commit("setHasUserErased", false);
+         
+      }
+      //let listOfProducts = this.productos,
+        let listOfProducts=this.$store.state.productos[0],
         titleSearched = this.$store.state.userInfo.productTitleSearched;
-      console.log(titleSearched);
+      console.log(this.$store.state.productos[0]);
       return (this.productos = getByTitle(listOfProducts, titleSearched));
+
     }
   }
 };

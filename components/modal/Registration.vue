@@ -147,23 +147,13 @@
                 <p class="title">Bienvenido {{ name }}!</p>
                 <br />
                 <h1>
-                  Para empezar a comprar, completa el registro en la seccion Tu
-                  perfil
+                  Para empezar a comprar, completa el registro en la sección Tu
+                  Perfil
                 </h1>
               </div>
             </div>
           </div>
-          <div v-else-if="status == 200" class="level">
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="title">Ooops.. {{ name }}!</p>
-                <p class="heading">
-                  Parece que el correo ya esta ocupado por otro usuario, intente
-                  uno diferente
-                </p>
-              </div>
-            </div>
-          </div>
+
         </section>
         <footer class="modal-card-foot">
           <button
@@ -191,7 +181,7 @@
 import { isValidEmail } from "@/assets/validators";
 import swal from "sweetalert";
 import axios from "axios";
-import validaciones from "./validaciones"
+import validaciones from "./validaciones";
 export default {
   name: "registration",
 
@@ -241,25 +231,21 @@ export default {
     },
     logIn(email, password) {
       axios
-        .post("http://0.0.0.0:3000/v1/login", {
+        .post("http://192.168.1.77:3000/v1/login", {
           email: email,
           password: password
         })
         .then(response => {
           this.httpStatusCode = response.status;
-          if (this.httpStatusCode == 202) {
-            swal("Datos incorrectos, intente de nuevo", "", "error");
-          } else {
+
+
             this.setToken(response.data.token);
             if (this.email && this.password && this.httpStatusCode == 200) {
               this.highlightEmailWithError = false;
               this.highlightPasswordWithError = false;
               this.isFormSuccess = true;
               this.$store.commit("isUserLoggedIn", this.isFormSuccess);
-            } else {
-              console.log("error1");
             }
-
             if (!this.email) {
               this.highlightEmailWithError = true;
 
@@ -275,33 +261,27 @@ export default {
             } else {
               this.highlightPasswordWithError = false;
             }
-          }
-        });
+          
+        }).catch(err=>{
+               
+               swal("Algo salió mal","Intente de nuevo más tarde","error")
+        })
     },
     enviarFormulario() {
-      if ((this.password = this.repeatPassword)) {
-        if(!validaciones.validarString(this.name)){
-          swal("Escriba un nombre valido","solo se permiten letras","error")
-        }
+      if (this.password == this.repeatPassword) {
+        if (!validaciones.validarString(this.name)) {
+          swal("Escriba un nombre valido", "solo se permiten letras", "error");
+        }else{
         axios
-          .post("http://127.0.0.1:3000/v1/adduser", {
+          .post("http://192.168.1.77:3000/v1/adduser", {
             name: this.name,
             email: this.email,
             password: this.password,
-            rollID: 1
           })
           .then(response => {
-            if (response.status == 200) {
-              console.log(response.status);
-              this.status = 200;
-            }
-            if (response.status == 201) {
-              console.log(response.status);
-              this.status = 201;
-            }
-          });
-
-        if (
+            this.status = response.status;
+         
+                 if (
           this.name &&
           this.email &&
           this.password &&
@@ -314,8 +294,8 @@ export default {
           this.$store.commit("setUserName", this.name);
           this.$store.commit("isUserSignedUp", this.isFormSuccess);
           this.$store.commit("isUserLoggedIn", this.isFormSuccess);
-          console.log(this.email,"  ", this.password)
-          this.logIn(this.email, this.password);
+          console.log(response.data);
+        this.setToken(response.data.token);
         }
 
         if (!this.name) {
@@ -345,6 +325,23 @@ export default {
         } else {
           this.highlightRepeatPasswordWithError = false;
         }
+         
+         
+         
+         }).catch(err=>{
+            this.status=err.response.status
+           
+            if (this.status==409) {
+              swal("Este correo no está disponble","intenta con uno diferente","warning")
+            } else {
+              swal("algo salió mal","intenta de nuevo más tarde","error")
+            }
+
+          })
+ 
+          }
+
+
       } else {
         swal("Las contraseñas no coinciden", "", "error");
       }

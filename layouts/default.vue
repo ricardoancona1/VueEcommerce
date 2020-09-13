@@ -31,7 +31,7 @@ export default {
 
 <style>
   .el-header, .el-footer {
-    background-color: #B3C0D1;
+    background-color: red;
     color: #333;
     text-align: center;
     line-height: 60px;

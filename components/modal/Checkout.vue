@@ -1,7 +1,7 @@
 <template>
   <div :class="[openModal ? 'is-active' : '', 'modal']">
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card" content="width = device-width, initial-scale = 1">
       <header class="modal-card-head">
         <p class="modal-card-title">{{ modalTitle }}</p>
         <button
@@ -25,29 +25,22 @@
                 product.quantity > 0 ? ` - Quantity: ${product.quantity}` : ""
               }}
             </p>
-            <p>{{ product.precio }}</p>
+            <p>${{ product.precio }} MXN</p>
           </div>
           <div v-if="productos.length === 0">
             <p>{{ cartEmptyLabel }}</p>
           </div>
         </div>
-        <div v-if="isCheckoutSection">
-          <h1>Ya casi...</h1>
-          <p>
-            Se te envió un correo con instrucciones para completar tu pedido!
-          </p>
-        </div>
       </section>
       <footer class="modal-card-foot">
-        <div v-for="product in productos" :key="product.id">
-          <button
-            v-show="productos.length > 0 && !isCheckoutSection"
-            class="button is-info"
-            @click="onNextBtn(product.id)"
-          >
-            {{ buyLabel }}
-          </button>
-        </div>
+        <button
+          v-show="productos.length > 0 && !isCheckoutSection"
+          class="button is-info"
+          @click="onNextBtn(productos)"
+        >
+          {{ buyLabel }}
+        </button>
+
         <button
           v-if="isCheckoutSection"
           class="button is-info"
@@ -62,6 +55,8 @@
 
 <script>
 import axios from "axios";
+import swal from "sweetalert";
+import oneProduct from "../../pages/product_detail/_id";
 export default {
   name: "checkout",
 
@@ -73,14 +68,15 @@ export default {
       closeLabel: "Cerrar",
       isCheckoutSection: false,
       usuarioID: 1,
-      ids: []
+      ids: [],
+      statusCode: ""
     };
   },
 
   computed: {
-    products() {
-      return this.$store.getters.productsAdded;
-    },
+   // products() {
+    //  return this.$store.getters.productsAdded;
+    //},
     productos() {
       let carrito = this.$store.getters.carrito;
       return carrito;
@@ -127,11 +123,10 @@ export default {
     comprar(id) {
       for (let i = 0; i < this.productos.length; i++) {
         this.ids[i] = this.productos[i].id;
-        console.log("these are the ids", this.ids[i]);
       }
       axios
         .post(
-          "http://0.0.0.0:3000/v1/ventas",
+          "http://192.168.1.77:3000/v1/ventas",
 
           {
             productoID: this.ids
@@ -143,14 +138,50 @@ export default {
             }
           }
         )
-        .then(response => {});
+        .then(response => {
+          this.ids=[]
+            this.$store.commit("emptyCart");
+          swal(
+            "Se te envió un correo con instrucciones para confirmar tu compra",
+            "Gracias por utilizar COMPRASALLYNAT",
+            "success"
+          ).then(value => {
+            this.$store.commit("showCheckoutModal", false);
+          });
+        })
+        .catch(err => {
+            this.$store.commit("emptyCart");
+          this.ids=[]
+          console.log(err);
+          if (err.response.status == 401) {
+            swal("Su sesión expiró", "lo sentimos", "error").then(value => {
+              this.$store.commit("showCheckoutModal", false);
+            });
+            this.cerrarSesion();
+          }
+          if (err.response.status == 500) {
+            swal(
+              "Ocurrió un error al procesar su solicitud",
+              "intentelo de nuevo más tarde",
+              "error"
+            ).then(value => {
+              this.$store.commit("showCheckoutModal", false);
+            });
+          }
+          if (err.response.status == 409) {
+            swal(
+              "Debes completar el registro",
+              "Puedes completar el registro en Tu Perfil",
+              "warning"
+            ).then(value => {
+              this.$store.commit("showCheckoutModal", false);
+            });
+          }
+        });
+      this.$store.commit("emptyCart");
     },
     closeModal(reloadPage) {
       this.$store.commit("showCheckoutModal", false);
-
-      if (reloadPage) {
-        window.location.reload();
-      }
     },
     removeFromCart(id) {
       let data = {
@@ -163,14 +194,29 @@ export default {
     onNextBtn(id) {
       if (this.isUserLoggedIn) {
         this.isCheckoutSection = true;
-        this.comprar(id);
-      } else {
         this.$store.commit("showCheckoutModal", false);
-        this.$store.commit("showLoginModal", true);
+        this.comprar(id);
+        this.isCheckoutSection = false;
+      } else {
+        // this.$store.commit("showCheckoutModal", false);
+        // this.$store.commit("showLoginModal", true);
+        swal(
+          "Sesión no iniciada",
+          "Debes registrarte o iniciar sesión para continuar",
+          "warning"
+        );
       }
     },
     onPrevBtn() {
       this.isCheckoutSection = false;
+    },
+    cerrarSesion() {
+      this.$store.commit("isUserLoggedIn", false);
+      this.$store.commit("isUserSignedUp", false);
+      this.$store.commit("removeProductsFromFavourite");
+
+      // redirect to homepage
+      this.$router.push({ name: "index" });
     }
   }
 };

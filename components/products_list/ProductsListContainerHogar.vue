@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:3000/v1/categoria/Hogar", {
+      .get("http://192.168.1.77:3000/v1/categoria/Hogar", {
         headers: {
           "Content-Type": "application/json"
         }
@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     getProductByTitle() {
-      let listOfProducts = this.productos,
+      let listOfProducts = this.$store.state.productos[0],
         titleSearched = this.$store.state.userInfo.productTitleSearched;
 
       return (this.productos = getByTitle(listOfProducts, titleSearched));
