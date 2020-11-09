@@ -189,7 +189,8 @@ export default {
         status: false
       };
       this.$store.commit("removeFromCart", id);
-      this.$store.commit("setAddedBtn", data);
+      this.$store.commit("setAddedBtn1", data);
+      this.$store.commit("setBotonPrueba",false)
     },
     onNextBtn(id) {
       if (this.isUserLoggedIn) {

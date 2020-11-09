@@ -25,7 +25,8 @@ export let state = () => ({
   email: "",
   carrito: [],
   productos: [],
-  productosIniciales:[],
+  productosIniciales: [],
+  botonPrueba: true,
   products: [
     {
       id: 1,
@@ -150,18 +151,24 @@ export const getters = {
   },
   getProductos: state => {
     return state.productos;
+  },
+  getBotonPrueba: state => {
+    return state.botonPrueba;
+  },
+  estaEnCarrito: state => id => {
+
   }
 };
 
 export const mutations = {
   productos: (state, info) => {
-      state.productos=[]
+    state.productos = [];
     state.productos.push(info);
   },
   productosIniciales: (state, info) => {
-    state.productosIniciales=[]
-  state.productosIniciales.push(info);
-},
+    state.productosIniciales = [];
+    state.productosIniciales.push(info);
+  },
   AniadirAlCarrito: (state, info) => {
     state.carrito.push(info);
   },
@@ -173,27 +180,26 @@ export const mutations = {
     });
   },
   setAddedBtn1: (state, data) => {
-    if(!state.productos[0]){
-      console.log("no")
-      state.productos[0]=[]
-   //   state.productos[0].push(data)
+    if (!state.productos[0]) {
+      console.log("no");
+      state.productos[0] = [];
+      //   state.productos[0].push(data)
       state.productos[0].forEach(el => {
-        console.log(el.id)
-     if (data.id === el.id) {
-      
-       el.addedToCart = data.status;
-     }
-   });}
-    if(state.productos[0]){   
-      console.log("si")
+        console.log(el.id);
+        if (data.id === el.id) {
+          el.addedToCart = data.status;
+        }
+      });
+    }
+    if (state.productos[0]) {
+      console.log("si");
 
-       state.productos[0].forEach(el => {
-      
-      if (data.id === el.id) {
-        el.addedToCart = data.status;
-      }
-    });}
-
+      state.productos[0].forEach(el => {
+        if (data.id === el.id) {
+          el.addedToCart = data.status;
+        }
+      });
+    }
   },
   setAddedBtn: (state, data) => {
     state.products.forEach(el => {
@@ -204,9 +210,18 @@ export const mutations = {
   },
   removeFromCart: (state, id) => {
     state.carrito.pop(id);
+    console.log(id);
+    let contador = 0;
+    state.productos[0].forEach(el => {
+      if (el.uuid == id) {
+        state.productos[0][contador].addToCart = false;
+      }
+      contador++;
+    });
   },
-  emptyCart: (state) => {
-    state.carrito=[]
+
+  emptyCart: state => {
+    state.carrito = [];
   },
   removeProductsFromFavourite: state => {
     state.products.filter(el => {
@@ -269,6 +284,9 @@ export const mutations = {
   },
   SET_USER(state, authUser) {
     state.authUser = authUser;
+  },
+  setBotonPrueba(state, data) {
+    state.botonPrueba = data;
   }
 };
 /* 

@@ -41,7 +41,7 @@
           <div class="buttons">
             <button
               class="button is-warning"
-              v-if="!product.addedToCart && product.disponibles > 0"
+              v-if="!isAddedToCarrito && product.disponibles > 0"
               @click="
                 aniadirAlCarrito(
                   product.nombre,
@@ -55,7 +55,7 @@
             </button>
             <button
               class="button is-text"
-              v-if="product.addedToCart"
+              v-if="isAddedToCarrito"
               @click="removeFromCart(product.id, false)"
             >
               {{ removeFromCartLabel }}
@@ -97,7 +97,9 @@ export default {
       viewDetailsLabel: "Detalles",
       removeFromCartLabel: "Remover del carrito",
       selected: 1,
-      quantityArray: []
+      quantityArray: [],
+      id: this.product.uuid,
+      agregadoAlCarrito: false
     };
   },
   components: { detalles },
@@ -109,6 +111,22 @@ export default {
   computed: {
     isUserLogged() {
       return this.$store.getters.isUserLoggedIn;
+    },
+    isAddedToCarrito() {
+      let carrito = [];
+      carrito = this.$store.getters.carrito;
+      console.log("prueba carrito", carrito);
+      this.agregadoAlCarrito = false;
+      this.$store.getters.carrito.forEach(el => {
+        if (el.id == this.id) {
+          this.agregadoAlCarrito = true;
+        }
+      });
+      if (this.agregadoAlCarrito == true) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   methods: {
@@ -123,6 +141,7 @@ export default {
         precio: precio,
         addedToCart: true
       };
+
       this.$store.commit("AniadirAlCarrito", info);
       this.$store.commit("setAddedBtn1", data);
     },

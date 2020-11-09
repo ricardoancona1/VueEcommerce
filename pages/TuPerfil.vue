@@ -292,17 +292,17 @@ export default {
   
     enviarFormulario() {
       let flag = true;
-      if (!validaciones.validarString(this.name)) {
+      if (!validaciones.validarString(this.name) || this.name==""||this.name==null) {
         swal("Escriba un nombre valido", "Sólo se permiten letras", "error");
         flag = false;
       }
-      if (!validaciones.validarString(this.lastName)||this.lastName==null) {
+      if (!validaciones.validarString(this.lastName)||this.lastName==null||this.lastName=="") {
         console.log("last name",this.lastName)
         swal("Escriba apellidos validos", "Sólo se permiten letras", "error");
         flag = false;
       }
 
-      if (validaciones.validarString(this.cp)) {
+      if (validaciones.validarString(this.cp)||this.cp==""||this.cp==null) {
         swal(
           "Escriba un Codigo postal valido",
           "Sólo se permiten numeros",
@@ -310,7 +310,7 @@ export default {
         );
         flag = false;
       }
-      if (validaciones.validarString(this.phone)) {
+      if (validaciones.validarString(this.phone) ||this.phone=="" ||this.phone==null ) {
         swal(
           "Escriba un  numero telefonico  valido",
           "Sólo se permiten numeros",
@@ -318,15 +318,15 @@ export default {
         );
         flag = false;
       }
-      if (this.direccion == null) {
+      if (this.direccion == null ||this.direccion == "") {
         swal("Ingrese su dirección", "", "error");
         flag = false;
       }
-      if (this.ciudad == null) {
+      if (this.ciudad == null||this.ciudad=="") {
         swal("Ingrese una ciudad", "", "error");
         flag = false;
       }
-      if (this.colonia == null) {
+      if (this.colonia == null||this.colonia=="") {
         swal("Ingrese una colonia o suburbio", "", "error");
         flag = false;
       }

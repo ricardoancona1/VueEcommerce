@@ -35,13 +35,46 @@ export default {
         }
       })
       .then(response => {
-               for (let i = 0; i < response.data.listProducts.length; i++) {
-          Object.assign(response.data.listProducts[i], { addedToCart: false });
+        if (this.$store.getters.carrito.length == 0) {
+          for (let i = 0; i < response.data.listProducts.length; i++) {
+            Object.assign(response.data.listProducts[i], {
+              addedToCart: false
+            });
+          }
+        } else {
+          for (
+            let index = 0;
+            index < this.$store.getters.carrito.length;
+            index++
+          ) {
+            for (let i = 0; i < response.data.listProducts.length; i++) {
+              if (
+                this.$store.getters.carrito[index].id ==
+                response.data.listProducts[i].uuid
+              ) {
+                Object.assign(response.data.listProducts[i], {
+                  addedToCart: true
+                });
+                response.data.listProducts[i].addedToCart = true;
+          
+              } else {
+                if (!response.data.listProducts[i].addedToCart == true) {
+                  Object.assign(response.data.listProducts[i], {
+                    addedToCart: false
+                  });
+                }
+              }
+            }
+          }
         }
+
         let info = response.data.listProducts;
-        console.log("info ",info)
-     
-        this.$store.commit("productos",info);
+
+        this.$store.commit("productos", info);
+        this.productosIniciales = this.$store.commit(
+          "productosIniciales",
+          info
+        );
         this.productos = this.$store.state.productos[0];
         
       });
