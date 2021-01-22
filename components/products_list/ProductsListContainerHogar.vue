@@ -1,7 +1,6 @@
 <template>
   <div class="columns is-centered is-multiline">
     <div
-      v-on:keyup.delete="reestablecerProductos"
       class="card column is-one-quarter"
       v-for="product in productos"
       :key="product.id"
@@ -27,15 +26,14 @@ export default {
   data() {
     return {
       id: "",
-      noProductLabel: "No se encontraron productos",
+      noProductLabel: "No product found",
       productsFiltered: [],
-      productos: [],
-      productosIniciales: []
+      productos: []
     };
   },
   mounted() {
     axios
-      .get("http://someServerUrl:3000/v1/product", {
+      .get("http://someServerUrl:3000/v1/categoria/Hogar", {
         headers: {
           "Content-Type": "application/json"
         }
@@ -62,7 +60,7 @@ export default {
                   addedToCart: true
                 });
                 response.data.listProducts[i].addedToCart = true;
-                console.log("veme", response.data.listProducts[i]);
+          
               } else {
                 if (!response.data.listProducts[i].addedToCart == true) {
                   Object.assign(response.data.listProducts[i], {
@@ -75,6 +73,7 @@ export default {
         }
 
         let info = response.data.listProducts;
+
         this.$store.commit("productos", info);
         this.productosIniciales = this.$store.commit(
           "productosIniciales",
@@ -90,22 +89,13 @@ export default {
       } else {
         return this.productos;
       }
-    },
-    productos1(){
-      this.productos
     }
   },
   methods: {
     getProductByTitle() {
-      if (this.$store.state.userInfo.hasErased) {
-        console.log("ha borrado");
-
-        this.$store.commit("setHasUserErased", false);
-      }
-      //let listOfProducts = this.productos,
       let listOfProducts = this.$store.state.productos[0],
         titleSearched = this.$store.state.userInfo.productTitleSearched;
-      console.log(this.$store.state.productos[0]);
+
       return (this.productos = getByTitle(listOfProducts, titleSearched));
     }
   }

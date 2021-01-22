@@ -1,14 +1,22 @@
 <template>
+<div>
+  <br>
+   <br>
   <div class="footer">
+
     <div class="columns container">
       <div class="column">
-        <p>Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.</p>
+        <p>Contactanos </p>
+         <p> Tel.: 99942350</p>
+         <br>
+        <p>Correo: comprasallynat@gmail.com</p>
       </div>
     <div class="column has-text-right">
-      <p>Vuemmerce | Made with ❤</p>
+      <p>Comprasallynat | 2020 </p>
     </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -19,7 +27,7 @@ export default {
 
 <style lang="scss" scoped>
  .footer {
-   background: black;
-   color: white;
+   background:rgb(0, 0, 0);
+   color :white;
  }
 </style>

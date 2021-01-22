@@ -1,13 +1,11 @@
 <template>
   <div class="section">
-    <h3 class="title">{{ pageTitle }}</h3>
+  
     <div class="columns is-centered is-multiline">
       <div class="card column is-one-quarter" v-for="product in productsInWishlist" :key="product.id">
         <VmProductsList :product="product"></VmProductsList>
       </div>
-      <div class="section" v-if="productsInWishlist.length === 0">
-        <p>{{ noProductLabel }}</p>
-      </div>
+ 
     </div>
   </div>
 </template>
@@ -21,27 +19,22 @@ export default {
 
 	data () {
     return {
-      pageTitle: 'Your Wishlist',
-      noProductLabel: 'Your wishlist is empty'
+   
     }
   },
 
   components: { VmProductsList },
 
   computed: {
-    productsInWishlist () {
-      if (this.$store.state.userInfo.hasSearched) {
-        return this.getProductByTitle();
-      } else {
-        return this.$store.getters.productsAddedToFavourite;
-      }
-    }
+
+    
   },
 
   methods: {
     getProductByTitle () {
-      let listOfProducts = this.$store.getters.productsAddedToFavourite,
+      let listOfProducts = this.productos,
           titleSearched = this.$store.state.userInfo.productTitleSearched;
+          console.log('this is a title searched',titleSearched)
       
       return this.productsFiltered = getByTitle(listOfProducts, titleSearched);
     }
