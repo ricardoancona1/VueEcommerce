@@ -40,7 +40,7 @@ module.exports = {
       { property: 'twitter:image',  content: 'https://example.com/image.jpg' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'http://192.168.1.77:3000/v1/product/image/Propuesta4.png' },
+      { rel: 'icon', type: 'image/x-icon', href: 'http://someServerUrl:3000/v1/product/image/Propuesta4.png' },
       { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/android-icon-192x192.png' },
       { rel: 'icon', type: 'image/png', sizes: '280x130', href: '/toyshop.png' },
       { rel: 'icon', type: 'image/png', sizes: '280x130', href: '/toyshop.png' },

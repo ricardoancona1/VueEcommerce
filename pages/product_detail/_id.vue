@@ -96,7 +96,7 @@ export default {
     id = this.$route.params.id;
 
     axios
-      .get(`http://192.168.1.77:3000/v1/productById/${id}`, {
+      .get(`http://someServerUrl:3000/v1/productById/${id}`, {
         headers: {
           "Content-Type": "application/json"
         }

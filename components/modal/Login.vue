@@ -154,7 +154,7 @@ export default {
     },
     logIn(email, password) {
       axios
-        .post("http://192.168.1.77:3000/v1/login", {
+        .post("http://someServerUrl:3000/v1/login", {
           email: email,
           password: password
         })

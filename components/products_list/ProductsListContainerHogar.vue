@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://192.168.1.77:3000/v1/categoria/Hogar", {
+      .get("http://someServerUrl:3000/v1/categoria/Hogar", {
         headers: {
           "Content-Type": "application/json"
         }

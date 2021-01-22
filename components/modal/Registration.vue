@@ -231,7 +231,7 @@ export default {
     },
     logIn(email, password) {
       axios
-        .post("http://192.168.1.77:3000/v1/login", {
+        .post("http://someServerUrl:3000/v1/login", {
           email: email,
           password: password
         })
@@ -273,7 +273,7 @@ export default {
           swal("Escriba un nombre valido", "solo se permiten letras", "error");
         }else{
         axios
-          .post("http://192.168.1.77:3000/v1/adduser", {
+          .post("http://someServerUrl:3000/v1/adduser", {
             name: this.name,
             email: this.email,
             password: this.password,

@@ -19,7 +19,7 @@ components:{
 },
 data(){
   return{
-img: 'http://192.168.1.77:3000/v1/settings/image'
+img: 'http://someServerUrl:3000/v1/settings/image'
 
   }
 }

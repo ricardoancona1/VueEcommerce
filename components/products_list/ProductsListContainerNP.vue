@@ -29,7 +29,7 @@ export default {
   },
   mounted(){
     axios
-      .get("http://192.168.1.77:3000/v1/categoria/NuestrosProductos", {
+      .get("http://someServerUrl:3000/v1/categoria/NuestrosProductos", {
         headers: {
           "Content-Type": "application/json"
         }

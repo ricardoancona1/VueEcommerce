@@ -177,7 +177,7 @@ export default {
   },
   mounted() {
     axios
-      .get("http://192.168.1.77:3000/v1/adduser/7", {
+      .get("http://someServerUrl:3000/v1/adduser/7", {
         headers: {
           "Content-Type": "application/json",
           Authorization: this.$store.getters.getToken
@@ -226,7 +226,7 @@ export default {
   methods: {
     getData() {
       axios
-        .get("http://192.168.1.77:3000/v1/adduser/7", {
+        .get("http://someServerUrl:3000/v1/adduser/7", {
           headers: {
             "Content-Type": "application/json",
             Authorization: this.$store.getters.getToken
@@ -341,7 +341,7 @@ export default {
       }
       if (flag) {
         axios
-          .put("http://192.168.1.77:3000/v1/adduser/7", {
+          .put("http://someServerUrl:3000/v1/adduser/7", {
             name: this.name,
             lastName: this.lastName,
             email: this.email,
